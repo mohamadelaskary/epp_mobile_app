@@ -4,7 +4,7 @@ data class InspectMaterialBody(
     val DeviceSerialNo: String,
     val applang: String,
     val employee_id: Int,
-    val itemqtyaccepted: Int,
+    val itemqtyaccepted: Double,
     val po_header_id: Int,
     val po_line_id: Int,
     val program_application_id: Int,

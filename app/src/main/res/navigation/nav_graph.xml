@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_signInFragment_to_changePasswordFragment"
             app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_updateApkFragment"
+            app:destination="@id/updateApkFragment" />
     </fragment>
     <fragment
         android:id="@+id/mainMenuFragment"
@@ -74,6 +77,12 @@
         <action
             android:id="@+id/action_mainMenuFragment_to_customerNameSearchFragment"
             app:destination="@id/customerNameSearchFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_gateMenuFragment"
+            app:destination="@id/gateMenuFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_gate_nav_graph"
+            app:destination="@id/gate_nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/auditMenuFragment"
@@ -170,17 +179,27 @@
         tools:layout="@layout/fragment_transact_move_order" >
         <action
             android:id="@+id/action_transactMoveOrderFragment_to_transactionHistoryFragment"
-            app:destination="@id/transactionHistoryFragment"
+            app:destination="@id/factoryTransactionHistoryFragment"
             app:enterAnim="@anim/push_right_in"
             app:exitAnim="@anim/push_down_out"
             app:popEnterAnim="@anim/push_right_in"
             app:popExitAnim="@anim/push_up_out"/>
     </fragment>
     <fragment
-        android:id="@+id/transactionHistoryFragment"
-        android:name="net.gbs.epp_project.Ui.Issue.EppOrganizations.TransactMoveOrderChemicalFactory.TransactionHistory.TransactionHistoryFragment"
-        android:label="fragment_transaction_history"
-        tools:layout="@layout/fragment_transaction_history" />
+        android:id="@+id/finishProductsTransactionHistoryFragment"
+        android:name="net.gbs.epp_project.Ui.Issue.EppOrganizations.FinishProductsReceiveIssue.TransactionHistory.FinishProductsTransactionHistoryFragment"
+        android:label="fragment_finish_products_transaction_history"
+        tools:layout="@layout/fragment_finish_products_transaction_history" />
+    <fragment
+        android:id="@+id/factoryTransactionHistoryFragment"
+        android:name="net.gbs.epp_project.Ui.Issue.EppOrganizations.TransactMoveOrderChemicalFactory.TransactionHistory.FactoryTransactionHistoryFragment"
+        android:label="fragment_factory_transaction_history"
+        tools:layout="@layout/fragment_factory_transaction_history" />
+    <fragment
+        android:id="@+id/indirect_chemicalsTransactionHistoryFragment"
+        android:name="net.gbs.epp_project.Ui.Issue.EppOrganizations.SpareParts.TransactionHistory.IndirectChemicalsTransactionHistoryFragment"
+        android:label="fragment_indirect_chemicals_transaction_history"
+        tools:layout="@layout/fragment_factory_transaction_history" />
     <include app:graph="@navigation/receiving_nav_graph" />
     <include app:graph="@navigation/return_nav_graph" />
     <fragment
@@ -231,7 +250,7 @@
         tools:layout="@layout/fragment_transact_spare_parts_work_order" >
         <action
             android:id="@+id/action_transactSparePartsWorkOrderFragment_to_transactionHistoryFragment"
-            app:destination="@id/transactionHistoryFragment" />
+            app:destination="@id/indirect_chemicalsTransactionHistoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/eppOrganizationsFinalProductMenuFragment"
@@ -284,10 +303,47 @@
         android:label="FinishProductsTransactMoveOrderFragment" >
         <action
             android:id="@+id/action_finishProductsTransactMoveOrderFragment_to_transactionHistoryFragment"
-            app:destination="@id/transactionHistoryFragment" />
+            app:destination="@id/finishProductsTransactionHistoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/changePasswordFragment"
         android:name="net.gbs.epp_project.Ui.SplashAndSignIn.ChangePassword.ChangePasswordFragment"
         android:label="ChangePasswordFragment" />
+    <fragment
+        android:id="@+id/gateMenuFragment"
+        android:name="net.gbs.epp_project.Ui.Menus.GateMenuFragment"
+        android:label="fragment_gate_menu"
+        tools:layout="@layout/fragment_gate_menu" >
+        <action
+            android:id="@+id/action_gateMenuFragment_to_truckListFragment"
+            app:destination="@id/truckListFragment" />
+        <action
+            android:id="@+id/action_gateMenuFragment_to_registerArrivalFragment"
+            app:destination="@id/registerArrivalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/truckListFragment"
+        android:name="net.gbs.epp_project.Ui.Gate.ConfirmArrival.TrucksList.ConfirmArrivalTruckListFragment"
+        android:label="fragment_truck_list"
+        tools:layout="@layout/fragment_truck_list" >
+        <action
+            android:id="@+id/action_truckListFragment_to_confirmArrivalFragment"
+            app:destination="@id/confirmArrivalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmArrivalFragment"
+        android:name="net.gbs.epp_project.Ui.Gate.ConfirmArrival.ConfirmArrival.ConfirmArrivalFragment"
+        android:label="fragment_confirm_arrival"
+        tools:layout="@layout/fragment_container_check_in" />
+    <fragment
+        android:id="@+id/registerArrivalFragment"
+        android:name="net.gbs.epp_project.Ui.Gate.RegisterArrival.RegisterArrivalFragment"
+        android:label="fragment_register_arrival"
+        tools:layout="@layout/fragment_register_arrival" />
+    <include app:graph="@navigation/gate_nav_graph" />
+    <fragment
+        android:id="@+id/updateApkFragment"
+        android:name="net.gbs.epp_project.Ui.SplashAndSignIn.Update.UpdateApkFragment"
+        android:label="fragment_update_apk"
+        tools:layout="@layout/fragment_update_apk" />
 </navigation>

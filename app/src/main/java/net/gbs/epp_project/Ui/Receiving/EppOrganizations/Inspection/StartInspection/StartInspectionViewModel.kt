@@ -29,7 +29,7 @@ class StartInspectionViewModel(private val app:Application,val activity: Activit
         poLineId: Int,
         receiptNo: String,
         shipToOrganizationId: Int,
-        acceptedQty: Int,
+        acceptedQty: Double,
         transactionDate:String,
     ) {
         inspectStatus.postValue(StatusWithMessage(Status.LOADING))

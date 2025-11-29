@@ -17,7 +17,7 @@ data class MoveOrderLine(
     @SerializedName("inventorY_ITEM_ID"            ) var inventorYITEMID            : Int?    = null,
     @SerializedName("inventorY_ITEM_CODE"          ) var inventorYITEMCODE          : String? = null,
     @SerializedName("inventorY_ITEM_DESC"          ) var inventorYITEMDESC          : String? = null,
-    @SerializedName("quantity"                     ) var quantity                   : Double? = null,
+    @SerializedName("quantity"                     ) var quantity                   : Double?    = null,
     @SerializedName("quantitY_DELIVERED"           ) var quantitYDELIVERED          : Double?    = null,
     @SerializedName("quantitY_DETAILED"            ) var quantitYDETAILED           : Double?    = null,
     @SerializedName("onHAND_QUANTITY"              ) var onHANDQUANTITY             : Double?    = null,
@@ -29,11 +29,15 @@ data class MoveOrderLine(
     @SerializedName("transactioN_SOURCE_TYPE_ID"   ) var transactioNSOURCETYPEID    : Int?    = null,
     @SerializedName("transactioN_SOURCE_TYPE_DESC" ) var transactioNSOURCETYPEDESC  : String? = null,
     @SerializedName("allocated_QUANTITY"           ) var allocatedQUANTITY          : Double?    = null,
+    @SerializedName("uoM_Conversion"               ) var uoMConversion              : Double?    = null,
     @SerializedName("loT_CONTROL_CODE"             ) var loTCONTROLCODE             : String? = null,
     @SerializedName("loT_CONTROL_NAME"             ) var loTCONTROLNAME             : String? = null,
     var isAlreadyAdded :Boolean = false
 ) {
-
+    val remainingQty:Double
+        get() {
+            return quantity!! - allocatedQUANTITY!!
+        }
     fun mustHaveLot():Boolean = loTCONTROLCODE=="2"
     companion object{
         fun toJson(moveOrderLine: MoveOrderLine):String{

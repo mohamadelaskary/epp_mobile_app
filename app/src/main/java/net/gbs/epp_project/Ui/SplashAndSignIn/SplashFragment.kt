@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -33,6 +34,7 @@ import net.gbs.epp_project.databinding.FragmentSplashBinding
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
+import kotlin.math.log
 
 
 class SplashFragment : BaseFragmentWithViewModel<SignInViewModel,FragmentSplashBinding>(),ChangeSettingsDialog.OnButtonsClicked {
@@ -84,11 +86,13 @@ class SplashFragment : BaseFragmentWithViewModel<SignInViewModel,FragmentSplashB
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val url = URL("$protocol://$ipAddress:$portNum/api/GBSEPPWMS/CheckConnection")
+//                val url = URL("$protocol://$ipAddress:$portNum/BasicDataSetUp/api/GBSEPPWMS/CheckConnection")
                 val urlc = url.openConnection() as HttpURLConnection
                 urlc.setRequestProperty(
                     "User-Agent",
                     "Android Application:" + Build.VERSION.SDK_INT
                 )
+                Log.d(TAG, "hasInternetConnection: $url")
                 urlc.setRequestProperty("Connection", "close")
                 urlc.connectTimeout = 1000 * 30 // mTimeout is in seconds
                 urlc.connect()
@@ -103,7 +107,7 @@ class SplashFragment : BaseFragmentWithViewModel<SignInViewModel,FragmentSplashB
 //                        setBaseUrl(communicationData.getProtocol(),communicationData.getIpAddress(),communicationData.getPortNumber())
 //                        Log.d(TAG, "hasInternetConnection: $BASE_URL")
                         viewModel.refreshRepository()
-                        navController.navigate(R.id.action_splashFragment_to_signInFragment)
+                        findNavController().navigate(R.id.action_splashFragment_to_signInFragment)
                         localStorage.setFirstTime(false)
                         loadingDialog!!.hide()
                         if (changeSettingsDialog.isShowing)

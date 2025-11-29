@@ -301,7 +301,7 @@ class FinishProductsTransactMoveOrderFragment : BaseFragmentWithViewModel<Transa
         scannedItem = null
         selectedSubInventoryCodeFrom = null
         selectedSubInventoryCodeTo = null
-        binding.lotSerial.visibility = GONE
+        binding.transact.visibility = GONE
     }
 
 
@@ -347,7 +347,7 @@ class FinishProductsTransactMoveOrderFragment : BaseFragmentWithViewModel<Transa
     private fun setUpSubInventorySpinner() {
         binding.subInventoryFromSpinner.setOnItemClickListener { _, _, selectedIndex, _ ->
             selectedSubInventoryCodeFrom = subInventoryList[selectedIndex].subInventoryCode
-            viewModel.getLocatorsList(orgId, selectedSubInventoryCodeFrom!!)
+            viewModel.getLocatorsList(orgId, selectedSubInventoryCodeFrom!!,scannedItem?.inventorYITEMID!!)
             subInvType = SubInvType.FROM
         }
         binding.subInventoryToSpinner.setOnItemClickListener { _, _, selectedIndex, _ ->
@@ -449,7 +449,7 @@ class FinishProductsTransactMoveOrderFragment : BaseFragmentWithViewModel<Transa
             binding.subInventoryFromSpinner.setText(scannedItem.froMSUBINVENTORYCODE, false)
             binding.subInventoryFrom.isEnabled = false
             selectedSubInventoryCodeFrom = scannedItem.froMSUBINVENTORYCODE
-            viewModel.getLocatorsList(orgId, scannedItem.froMSUBINVENTORYCODE!!)
+            viewModel.getLocatorsList(orgId, scannedItem.froMSUBINVENTORYCODE!!,scannedItem.inventorYITEMID!!)
         }
         if (scannedItem.tOSUBINVENTORYCODE?.isNotEmpty()!!) {
             binding.subInventoryToSpinner.setText(scannedItem.tOSUBINVENTORYCODE, false)

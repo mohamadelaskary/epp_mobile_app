@@ -17,5 +17,5 @@ data class OnHandItem(
     @SerializedName("subinventorydescription"    ) var subinventorydescription : String? = null,
     @SerializedName("locator_id"                 ) var locatorId               : Int?    = null,
     @SerializedName("locatordescription"         ) var locatordescription      : String? = null,
-    @SerializedName("onhand_quantity"            ) var onhandQuantity          : Int?    = null
+    @SerializedName("onhand_quantity"            ) var onhandQuantity          : Double?    = null
 )

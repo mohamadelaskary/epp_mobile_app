@@ -1,5 +1,6 @@
 package net.gbs.epp_project.Model
 
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
 data class SubInventory(
@@ -9,5 +10,13 @@ data class SubInventory(
 ) {
     override fun toString(): String {
         return subInventoryCode!!
+    }
+    companion object{
+        fun toJson(subInventory: SubInventory):String{
+            return Gson().toJson(subInventory)
+        }
+        fun fromJson(subInventory: String): SubInventory{
+            return Gson().fromJson(subInventory, SubInventory::class.java)
+        }
     }
 }

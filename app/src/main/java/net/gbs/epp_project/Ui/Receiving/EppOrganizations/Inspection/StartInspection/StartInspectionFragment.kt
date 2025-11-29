@@ -97,17 +97,17 @@ class StartInspectionFragment : BaseFragmentWithViewModel<StartInspectionViewMod
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 binding.acceptedQty.error = null
                 if (binding.acceptedQty.editText?.text.toString().isNotEmpty()) {
-                    val acceptedQty = binding.acceptedQty.editText?.text.toString().toInt()
+                    val acceptedQty = binding.acceptedQty.editText?.text.toString().toDouble()
                     if (acceptedQty <= poDetailsItem2.itemqtyReceived!!) {
                         val rejectedQty = poDetailsItem2.itemqtyReceived!! - acceptedQty
                         binding.rejectedQty.editText?.setText(rejectedQty.toString())
                     } else {
-                        binding.rejectedQty.editText?.setText("0")
+                        binding.rejectedQty.editText?.setText("0.0")
                         binding.acceptedQty.error =
                             getString(R.string.accepted_qty_must_be_less_or_equal_to_received_qty)
                     }
                 } else {
-                    binding.acceptedQty.editText?.setText("0")
+                    binding.acceptedQty.editText?.setText("0.0")
                 }
             }
 
@@ -127,7 +127,7 @@ class StartInspectionFragment : BaseFragmentWithViewModel<StartInspectionViewMod
         binding.receivedQty.text = poDetailsItem2.itemqtyReceived.toString()
         binding.poQty.text = poDetailsItem2.poLineQty.toString()
         binding.acceptedQty.editText?.setText(poDetailsItem2.itemqtyReceived.toString())
-        binding.rejectedQty.editText?.setText("0")
+        binding.rejectedQty.editText?.setText("0.0")
     }
 
 
@@ -140,18 +140,18 @@ class StartInspectionFragment : BaseFragmentWithViewModel<StartInspectionViewMod
                 if (selectedDate.isNotEmpty()) {
                     if (itemCode.isNotEmpty()) {
                         if (acceptedQty.isNotEmpty()) {
-                            if (Tools.containsOnlyDigits(acceptedQty)) {
+//                            if (Tools.containsOnlyDigits(acceptedQty)) {
                                 viewModel.InspectMaterial(
                                     poHeaderId = poDetailsItem2.poHeaderId!!,
                                     poLineId = poDetailsItem2.poLineId!!,
                                     receiptNo = poDetailsItem2.receiptno!!,
                                     shipToOrganizationId = poDetailsItem2.shipToOrganizationId!!,
-                                    acceptedQty = acceptedQty.toInt(),
+                                    acceptedQty = acceptedQty.toDouble(),
                                     transactionDate = viewModel.getTodayDate(),
                                 )
-                            } else
-                                binding.acceptedQty.error =
-                                    getString(R.string.please_enter_valid_accepted_qty)
+//                            } else
+//                                binding.acceptedQty.error =
+//                                    getString(R.string.please_enter_valid_accepted_qty)
                         } else {
                             binding.acceptedQty.error =
                                 getString(R.string.please_enter_accepted_qty)

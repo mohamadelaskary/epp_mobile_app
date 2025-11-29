@@ -5,11 +5,14 @@ package net.gbs.epp_project.Network.ApiInterface
 import net.gbs.epp_project.Model.ApiRequestBody.AllocateItemsBody
 import net.gbs.epp_project.Model.ApiRequestBody.InspectMaterialBody
 import net.gbs.epp_project.Model.ApiRequestBody.ItemsReceivingBody
+import net.gbs.epp_project.Model.ApiRequestBody.MobileApproveData
 import net.gbs.epp_project.Model.ApiRequestBody.MobileLogBody
 import net.gbs.epp_project.Model.ApiRequestBody.PhysicalInventory_CountBody
 import net.gbs.epp_project.Model.ApiRequestBody.PutawayMaterialBody
 import net.gbs.epp_project.Model.ApiRequestBody.ReturnMaterialBody
 import net.gbs.epp_project.Model.ApiRequestBody.ReturnToWarehouseItemsBody
+import net.gbs.epp_project.Model.ApiRequestBody.SaveCheckInData
+import net.gbs.epp_project.Model.ApiRequestBody.SaveNewVehicleRecordData
 import net.gbs.epp_project.Model.ApiRequestBody.SignInBody
 import net.gbs.epp_project.Model.ApiRequestBody.TransactItemsBody
 import net.gbs.epp_project.Model.ApiRequestBody.TransactMultiItemsBody
@@ -17,7 +20,11 @@ import net.gbs.epp_project.Model.ApiRequestBody.TransferMaterialBody
 import net.gbs.epp_project.Model.ApiResponse.CreateNewCycleCountOrderResponse
 import net.gbs.epp_project.Model.ApiResponse.CycleCountOrder_StockCompareResponse
 import net.gbs.epp_project.Model.ApiResponse.DeliverLotListResponse
+import net.gbs.epp_project.Model.ApiResponse.EppGbsSalesAgreementDGetListResponse
+import net.gbs.epp_project.Model.ApiResponse.EppGbsSalesAgreementHGetListResponse
+import net.gbs.epp_project.Model.ApiResponse.FeBookingsGetListResponse
 import net.gbs.epp_project.Model.ApiResponse.GetDateResponse
+import net.gbs.epp_project.Model.ApiResponse.GovernoratesGetListResponse
 import net.gbs.epp_project.Model.ApiResponse.LocatorListResponse
 import net.gbs.epp_project.Model.ApiResponse.LotListResponse
 import net.gbs.epp_project.Model.ApiResponse.MoveOrderGetByHeaderIdResponse
@@ -26,6 +33,7 @@ import net.gbs.epp_project.Model.ApiResponse.MoveOrderLinesGetByHeaderIdResponse
 import net.gbs.epp_project.Model.ApiResponse.MoveOrdersListResponse
 import net.gbs.epp_project.Model.ApiResponse.OnHandForAllocateResponse
 import net.gbs.epp_project.Model.ApiResponse.OnHandListResponse
+import net.gbs.epp_project.Model.ApiResponse.OnHandLocatorDetailsResponse
 import net.gbs.epp_project.Model.ApiResponse.OnHandLotResponse
 import net.gbs.epp_project.Model.ApiResponse.OrganizationAuditListResponse
 import net.gbs.epp_project.Model.ApiResponse.OrganizationListResponse
@@ -41,6 +49,9 @@ import net.gbs.epp_project.Model.ApiResponse.ReceiptNoListResponse
 import net.gbs.epp_project.Model.ApiResponse.ReturnWorkOrderLinesGetByHEADER_IDResponse
 import net.gbs.epp_project.Model.ApiResponse.SaveCycleCountOrderDetailsResponse
 import net.gbs.epp_project.Model.ApiResponse.SubInvListResponse
+import net.gbs.epp_project.Model.ApiResponse.ViewArrivalRegistrationVehicleResponse
+import net.gbs.epp_project.Model.ApiResponse.ViewArrivalVehicleResponse
+import net.gbs.epp_project.Model.ApiResponse.ViewAwaitingCheckinVehicleResponse
 import net.gbs.epp_project.Model.ApiResponse.WorkOrderList_ReturnMaterialToInventoryResponse
 import net.gbs.epp_project.Model.ApiResponse.WorkOrdersListResponse
 import net.gbs.epp_project.Model.Response.GetItemListResponse
@@ -238,11 +249,19 @@ interface ApiInterface {
         @Query("subinv_code")  subinv_code : String,
     ) : Response<LocatorListResponse>
 
+    @GET("LocatorList")
+    suspend fun getLocatorListByItemId(
+        @Query("org_id")  orgId : String,
+        @Query("subinv_code")  subinv_code : String,
+        @Query("INVENTORY_ITEM_ID")  itemId : Int,
+    ) : Response<LocatorListResponse>
+
 
     @POST("InspectMaterial")
     suspend fun InspectMaterial(
         @Body  body : InspectMaterialBody
     ) : Response<NoDataResponse>
+
     @POST("PutawayMaterial")
     suspend fun PutawayMaterial(
         @Body  body : PutawayMaterialBody
@@ -256,6 +275,7 @@ interface ApiInterface {
         @Query("org_id")  orgId : String,
         @Query("INVENTORY_ITEM_ID")  itemId : Int?,
         @Query("SUBINVENTORY_CODE")  SUBINVENTORY_CODE : String?,
+        @Query("locator_code")  locatorCode : String?,
     ) : Response<LotListResponse>
     @GET("LotList")
     suspend fun getDeliverLotList(
@@ -291,7 +311,7 @@ interface ApiInterface {
         @Query("ItemCode")  itemCode : String,
         @Query("CycleCountHeaderId")  cycleCountHeaderId : Int,
         @Query("LocatorCode")  locatorCode : String,
-        @Query("Qty")  qty : Int,
+        @Query("Qty")  qty : Double,
         @Query("OrgCode")  organizationCode : String,
     ) : Response<SaveCycleCountOrderDetailsResponse>
 
@@ -418,7 +438,7 @@ interface ApiInterface {
     ) : Response<NoDataResponse>
 
     @GET("PurchaseOrderReceiptNoList")
-    suspend fun getItemInfo(
+    suspend fun getItemInfo_receiving(
         @Query("UserID")  userId : Int,
         @Query("DeviceSerialNo")  DeviceSerialNo : String,
         @Query("applang")  appLang : String,
@@ -449,6 +469,7 @@ interface ApiInterface {
         @Query("org_id")  orgId : Int,
     ) : Response<MoveOrderGetDetailsByHEADER_IDResponse>
 
+
     @GET("OnHandForAllocate")
     suspend fun getOnHangItemInfo(
         @Query("UserID")  userId : Int,
@@ -458,13 +479,95 @@ interface ApiInterface {
         @Query("org_id")  orgId : Int,
     ) : Response<OnHandForAllocateResponse>
     @GET("OnHandForAllocate")
-    suspend fun getItemInfo(
+    suspend fun getItemInfo_issue(
         @Query("UserID")  userId : Int,
         @Query("DeviceSerialNo")  DeviceSerialNo : String,
         @Query("applang")  appLang : String,
         @Query("item_code")  itemCode : String,
         @Query("subinv_code")  subInvCode: String,
-        @Query("locator_code")  locatorCode : String,
+        @Query("locator_code")  locatorCode : String?,
         @Query("org_id")  orgId : Int,
     ) : Response<OnHandForAllocateResponse>
+
+    @GET("OnHandForAllocate_GroupedBySubInv")
+    suspend fun getOnHandForAllocate_GroupedBySubInv(
+        @Query("UserID")  userId : Int,
+        @Query("DeviceSerialNo")  DeviceSerialNo : String,
+        @Query("applang")  appLang : String,
+        @Query("item_code")  itemCode : String,
+        @Query("subinv_code")  subInvCode: String,
+        @Query("org_id")  orgId : Int,
+    ) : Response<OnHandForAllocateResponse>
+
+    @GET("ViewArrivalVehicle")
+    suspend fun viewArrivalVehicle(
+        @Query("UserID")  userId : Int,
+        @Query("DeviceSerialNo")  deviceSerialNo : String,
+        @Query("applang")  appLang : String,
+    ) : Response<ViewArrivalVehicleResponse>
+
+    @GET("ViewArrivalRegistrationVehicle")
+    suspend fun viewArrivalRegistrationVehicles(
+        @Query("UserID")  userId : Int,
+        @Query("DeviceSerialNo")  deviceSerialNo : String,
+        @Query("applang")  appLang : String,
+    ) : Response<ViewArrivalRegistrationVehicleResponse>
+
+    @POST("MobileApprove")
+    suspend fun mobileApprove(
+        @Body approveData : MobileApproveData,
+    ) : Response<NoDataResponse>
+
+    @GET("ViewAwaitingCheckinVehicle")
+    suspend fun viewAwaitingCheckinVehicle(
+        @Query("UserID")  userId : Int,
+        @Query("DeviceSerialNo")  deviceSerialNo : String,
+        @Query("applang")  appLang : String,
+    ) : Response<ViewAwaitingCheckinVehicleResponse>
+
+    @POST("SaveCheckIn")
+    suspend fun saveCheckIn(
+        @Body approveData : SaveCheckInData,
+    ) : Response<NoDataResponse>
+
+    @GET("GovernoratesGetList")
+    suspend fun getGovernoratesList(
+        @Query("UserID")  userId : Int,
+        @Query("DeviceSerialNo")  deviceSerialNo : String,
+        @Query("applang")  appLang : String,
+    ) : Response<GovernoratesGetListResponse>
+    @GET("FeBookingsGetList")
+    suspend fun getFeBookingsList(
+        @Query("UserID")  userId : Int,
+        @Query("DeviceSerialNo")  deviceSerialNo : String,
+        @Query("applang")  appLang : String,
+    ) : Response<FeBookingsGetListResponse>
+    @GET("EppGbsSalesAgreementHGetList")
+    suspend fun getEppGbsSalesAgreementHList(
+        @Query("UserID")  userId : Int,
+        @Query("DeviceSerialNo")  deviceSerialNo : String,
+        @Query("applang")  appLang : String,
+    ) : Response<EppGbsSalesAgreementHGetListResponse>
+    @GET("EppGbsSalesAgreementDGetList")
+    suspend fun getEppGbsSalesAgreementDList(
+        @Query("UserID")  userId : Int,
+        @Query("DeviceSerialNo")  deviceSerialNo : String,
+        @Query("applang")  appLang : String,
+        @Query("SalesAgrHeaderId")  salesAgrHeaderId: Int,
+    ) : Response<EppGbsSalesAgreementDGetListResponse>
+
+    @POST("SaveNewVehicleRecord")
+    suspend fun saveNewVehicleRecord(
+        @Body saveNewVehicleRecordData : SaveNewVehicleRecordData,
+    ) : Response<NoDataResponse>
+
+    @GET("OnHandLocatorDetails")
+    suspend fun getOnHandLocatorDetails(
+        @Query("UserID")  userId : Int,
+        @Query("DeviceSerialNo")  deviceSerialNo : String,
+        @Query("applang")  appLang : String,
+        @Query("org_id")  orgId : Int,
+        @Query("item_code")  itemCode: String,
+        @Query("locator_code")  locatorCode: String,
+    ) : Response<OnHandLocatorDetailsResponse>
 }

@@ -58,7 +58,7 @@ class RejectionPutAwayFragment : BaseFragmentWithViewModel<RejectionPutAwayViewM
         viewModel.poDetailsItemsLiveData.observe(requireActivity()) { it ->
             val itemList = mutableListOf<PODetailsItem2>()
             it.forEach {
-                if (it.itemqtyRejected!=0) {
+                if (it.itemqtyRejected!=0.0) {
                     if(it.isinspected.toBoolean() && !it.isRejectedDelivered.toBoolean())
                         itemList.add(it)
                 }

@@ -39,6 +39,7 @@ class MoveOrderLinesAdapter(val orderLineItemClicked: OnMoveOrderLineItemClicked
         with(holder.binding){
             itemCode.text = line.inventorYITEMCODE
             itemDescription.text = line.inventorYITEMDESC
+            allocatedQty.text = line.allocatedQUANTITY.toString()
             qty.text = line.quantity.toString()
             locatorCode.text = line.froMLOCATORCode
             if (line.isAlreadyAdded)
@@ -46,6 +47,7 @@ class MoveOrderLinesAdapter(val orderLineItemClicked: OnMoveOrderLineItemClicked
             else
                 background.setCardBackgroundColor(context.resources.getColor(R.color.white))
         }
+
         holder.itemView.setOnClickListener {
             if (!line.isAlreadyAdded)
                 orderLineItemClicked.onMoveOrderLineClicked(line)

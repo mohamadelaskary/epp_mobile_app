@@ -14,10 +14,13 @@ import net.gbs.epp_project.MainActivity.MainActivity
 import net.gbs.epp_project.Model.ApiRequestBody.MobileLogBody
 import net.gbs.epp_project.Model.ApiRequestBody.TransactItemsBody
 import net.gbs.epp_project.Model.ApiRequestBody.TransactMultiItemsBody
+import net.gbs.epp_project.Model.ApiResponse.LocatorItems
 import net.gbs.epp_project.Model.IssueOrderLists
 import net.gbs.epp_project.Model.Locator
+import net.gbs.epp_project.Model.Lot
 import net.gbs.epp_project.Model.MoveOrderLine
 import net.gbs.epp_project.Model.Organization
+import net.gbs.epp_project.Model.SparePartsMoveOrderLine
 import net.gbs.epp_project.Model.Status
 import net.gbs.epp_project.Model.StatusWithMessage
 import net.gbs.epp_project.Model.SubInventory
@@ -82,11 +85,11 @@ class TransactSparePartsWorkOrderViewModel(private val application: Application,
 
     val getLocatorsListLiveData = SingleLiveEvent<List<Locator>>()
     val getLocatorsListStatus   = SingleLiveEvent<StatusWithMessage>()
-    fun getLocatorsList(orgId:Int,subInvCode:String){
+    fun getLocatorsListByItemId(orgId:Int,subInvCode:String,itemId:Int){
         job = CoroutineScope(Dispatchers.IO).launch {
             getLocatorsListStatus.postValue(StatusWithMessage(Status.LOADING))
             try {
-                val response = issueRepository.getLocatorList(orgId,subInvCode)
+                val response = issueRepository.getLocatorListByItemId(orgId,subInvCode,itemId)
                 ResponseDataHandler(response,getLocatorsListLiveData,getLocatorsListStatus,application).handleData("LocatorList")
                 if (response.body()?.responseStatus?.errorMessage!=null)
                     issueRepository.MobileLog(
@@ -110,13 +113,13 @@ class TransactSparePartsWorkOrderViewModel(private val application: Application,
         job = CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = issueRepository.transactMultiItems(body)
-                ResponseHandler(response,allocateItemsStatus,application).handleData("TransactItems")
+                ResponseHandler(response,allocateItemsStatus,application).handleData("TransactMultiItems")
                 if (response.body()?.responseStatus?.errorMessage!=null)
                     issueRepository.MobileLog(
                         MobileLogBody(
                             userId = USER?.notOracleUserId,
                             errorMessage = response.body()?.responseStatus?.errorMessage,
-                            apiName = "TransactItems"
+                            apiName = "TransactMultiItems"
                         )
                     )
             } catch (ex:Exception){
@@ -144,6 +147,32 @@ class TransactSparePartsWorkOrderViewModel(private val application: Application,
                     )
             } catch (ex:Exception){
                 getWorkOrdersListStatus.postValue(
+                    StatusWithMessage(
+                        Status.NETWORK_FAIL,application.getString(
+                            R.string.error_in_getting_data))
+                )
+            }
+        }
+    }
+
+    val getLocatorDetailsListLiveData = SingleLiveEvent<List<LocatorItems>>()
+    val getLocatorDetailsListStatus   = SingleLiveEvent<StatusWithMessage>()
+    fun getOnHandLocatorDetails(orgId:Int,itemCode:String,locatorCode:String){
+        job = CoroutineScope(Dispatchers.IO).launch {
+            getLocatorDetailsListStatus.postValue(StatusWithMessage(Status.LOADING))
+            try {
+                val response = issueRepository.getOnHandLocatorDetails(orgId = orgId, itemCode = itemCode, locatorCode = locatorCode)
+                ResponseDataHandler(response,getLocatorDetailsListLiveData,getLocatorDetailsListStatus,application).handleData("MoveOrdersList_SpareParts")
+                if (response.body()!=null)
+                    issueRepository.MobileLog(
+                        MobileLogBody(
+                            userId = USER?.notOracleUserId,
+                            errorMessage = response.body()?.responseStatus?.errorMessage,
+                            apiName = "OnHandLocatorDetails"
+                        )
+                    )
+            } catch (ex:Exception){
+                getLocatorDetailsListStatus.postValue(
                     StatusWithMessage(
                         Status.NETWORK_FAIL,application.getString(
                             R.string.error_in_getting_data))
@@ -223,6 +252,32 @@ class TransactSparePartsWorkOrderViewModel(private val application: Application,
                     StatusWithMessage(
                         Status.NETWORK_FAIL,application.getString(
                             R.string.error_in_connection))
+                )
+            }
+        }
+    }
+
+    val getLotListLiveData = SingleLiveEvent<List<Lot>>()
+    val getLotListStatus   = SingleLiveEvent<StatusWithMessage>()
+    fun getLotList(orgId:Int,itemId:Int?,subInvCode: String){
+        job = CoroutineScope(Dispatchers.IO).launch {
+            getLotListStatus.postValue(StatusWithMessage(Status.LOADING))
+            try {
+                val response = issueRepository.getLotList(orgId.toString(),itemId,subInvCode,null)
+                ResponseDataHandler(response,getLotListLiveData,getLotListStatus,application).handleData("LotList")
+                if (response.body()?.responseStatus?.errorMessage!=null)
+                    issueRepository.MobileLog(
+                        MobileLogBody(
+                            userId = USER?.notOracleUserId,
+                            errorMessage = response.body()?.responseStatus?.errorMessage,
+                            apiName = "LotList"
+                        )
+                    )
+            } catch (ex:Exception){
+                getLotListStatus.postValue(
+                    StatusWithMessage(
+                        Status.NETWORK_FAIL,application.getString(
+                            R.string.error_in_getting_data))
                 )
             }
         }

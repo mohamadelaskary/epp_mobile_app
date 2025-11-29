@@ -2,6 +2,7 @@ package net.gbs.epp_project.Base
 
 import android.app.Activity
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.provider.Settings
 import android.util.Log
 import com.honeywell.aidc.BuildConfig
@@ -17,21 +18,22 @@ import net.gbs.epp_project.Ui.SplashAndSignIn.SignInFragment
 import net.gbs.epp_project.Ui.SplashAndSignIn.SignInFragment.Companion.USER
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
-open class BaseRepository(val activity: Activity?) {
+open class BaseRepository(private val context: Context) {
     var apiInterface: ApiInterface
     init {
-        val communicationData = CommunicationData(activity!!)
+        val communicationData = CommunicationData(context)
         val baseUrl = updateBaseUrl(communicationData.getProtocol(),communicationData.getIpAddress(),communicationData.getPortNumber())
         Log.d(TAG, "BaseRepository: ${baseUrl}")
         apiInterface = RetrofitInstance.apiService(baseUrl)
     }
 
 
-    val localStorage = LocalStorage(activity!!)
-    val lang = LocaleHelper.getLanguage(activity!!)!!
+    val localStorage = LocalStorage(context)
+    val lang = LocaleHelper.getLanguage(context)!!
     val deviceSerialNo = Settings.Secure.getString(
-        activity?.contentResolver,
+        context?.contentResolver,
         Settings.Secure.ANDROID_ID
     )
     val userId = USER?.userId
@@ -45,21 +47,23 @@ open class BaseRepository(val activity: Activity?) {
     suspend fun MobileLog(body: MobileLogBody) = apiInterface.MobileLog(body)
 
 
-    suspend fun getLotList(orgId:String,itemId:Int?,subInventoryCode:String?) = apiInterface.getLotList(
+    suspend fun getLotList(orgId:String,itemId:Int?,subInventoryCode:String?,locatorCode: String?) = apiInterface.getLotList(
         userId = userId!!,
         deviceSerialNo = deviceSerialNo,
         appLang = lang,
         orgId = orgId,
         itemId = itemId,
-        SUBINVENTORY_CODE = subInventoryCode
+        SUBINVENTORY_CODE = subInventoryCode,
+        locatorCode = locatorCode
     )
-    suspend fun getDeliverLotList(orgId:String,itemId:Int?,subInventoryCode:String?) = apiInterface.getDeliverLotList(
+    suspend fun getDeliverLotList(orgId:String,itemId:Int?,subInventoryCode:String?,locatorCode:String?) = apiInterface.getLotList(
         userId = userId!!,
         deviceSerialNo = deviceSerialNo,
         appLang = lang,
         orgId = orgId,
         itemId = itemId,
-        SUBINVENTORY_CODE = subInventoryCode
+        SUBINVENTORY_CODE = subInventoryCode,
+        locatorCode = locatorCode
     )
 
     suspend fun mobileLog(body: MobileLogBody){
@@ -68,7 +72,7 @@ open class BaseRepository(val activity: Activity?) {
     }
     suspend fun getDate() = apiInterface.getDate()
 
-//    fun getStoredDeviceDate()            = localStorage.getStoredDeviceDate()
+    //    fun getStoredDeviceDate()            = localStorage.getStoredDeviceDate()
 //    fun getStoredActualDate()            = localStorage.getStoredActualDate()
 //    fun getStoredActualFullDateTime()    = localStorage.getStoredActualFullDateTime()
     fun setStoredDeviceDate(date:String) = localStorage.setStoredDeviceDate(date)

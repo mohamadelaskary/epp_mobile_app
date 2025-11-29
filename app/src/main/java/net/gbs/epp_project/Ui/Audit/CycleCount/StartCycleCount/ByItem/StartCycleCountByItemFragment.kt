@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 
 import net.gbs.epp_project.Base.BaseFragmentWithViewModel
 import net.gbs.epp_project.Model.CycleCountHeader
@@ -160,7 +161,7 @@ ZebraScanner.OnDataScanned
                         itemCode = item.itemCode!!,
                         locatorCode = selectedLocatorCode!!,
                         cycleCountHeaderId = cycleCountHeader.id!!,
-                        qty = qtyText.toInt(),
+                        qty = qtyText.toDouble(),
                         orgCode = item.orgCode!!
                     )
                 }
@@ -169,7 +170,7 @@ ZebraScanner.OnDataScanned
                 val bundle = Bundle()
                 bundle.putString(ORGANIZATION_CODE_KEY, item.orgCode)
                 bundle.putInt(CYCLE_COUNT_HEADER_KEY, cycleCountHeader.id!!)
-                navController.navigate(R.id.action_startCycleCountByItemFragment_to_onHandFragment,bundle)
+                findNavController().navigate(R.id.action_startCycleCountByItemFragment_to_onHandFragment,bundle)
             }
             R.id.finish_count -> viewModel.finishCycleCount(headerId = cycleCountHeader.id!!)
         }
@@ -186,10 +187,10 @@ ZebraScanner.OnDataScanned
             binding.qty.error = getString(R.string.please_enter_qty)
             isReady = false
         }
-        if (!containsOnlyDigits(qtyText)){
-            binding.qty.error = getString(R.string.please_enter_valid_qty)
-            isReady = false
-        }
+//        if (!containsOnlyDigits(qtyText)){
+//            binding.qty.error = getString(R.string.please_enter_valid_qty)
+//            isReady = false
+//        }
         return isReady
     }
 

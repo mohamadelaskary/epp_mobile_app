@@ -17,6 +17,12 @@ import net.gbs.epp_project.Ui.Audit.StartAudit.StartAuditViewModel
 import net.gbs.epp_project.Ui.ContainersReceiving.AddNewTruck.AddNewTruckViewModel
 import net.gbs.epp_project.Ui.ContainersReceiving.CustomerDataSearch.CustomerNameSearchViewModel
 import net.gbs.epp_project.Ui.FinishedProductsItemInfo.FinishedProductsItemInfoViewModel
+import net.gbs.epp_project.Ui.Gate.CheckIn.CheckIn.CheckInViewModel
+import net.gbs.epp_project.Ui.Gate.CheckIn.TrucksList.CheckInTruckListFragment
+import net.gbs.epp_project.Ui.Gate.CheckIn.TrucksList.CheckInTruckListViewModel
+import net.gbs.epp_project.Ui.Gate.ConfirmArrival.ConfirmArrival.ConfirmArrivalViewModel
+import net.gbs.epp_project.Ui.Gate.ConfirmArrival.TrucksList.TruckListViewModel
+import net.gbs.epp_project.Ui.Gate.RegisterArrival.RegisterArrivalViewModel
 import net.gbs.epp_project.Ui.Issue.EppOrganizations.IssueMenus.EppOrganizationsIssueViewModel
 import net.gbs.epp_project.Ui.Issue.EppOrganizations.SpareParts.TransactSparePartsWorkOrderViewModel
 
@@ -41,6 +47,7 @@ import net.gbs.epp_project.Ui.Return.ReturnToWarehouse.ReturnToWarehouseViewMode
 import net.gbs.epp_project.Ui.Return.ReturnToWarehouse.StartReturn.StartReturnViewModel
 import net.gbs.epp_project.Ui.Return.ReturnToWip.ReturnToWipViewModel
 import net.gbs.epp_project.Ui.SplashAndSignIn.SignInViewModel
+import net.gbs.epp_project.Ui.SplashAndSignIn.Update.UpdateApkViewModel
 import net.gbs.epp_project.Ui.Transfer.EppOrganizationsTransferViewModel
 import net.gbs.epp_project.Ui.Transfer.StartTransfer.StartTransferViewModel
 import java.lang.IllegalArgumentException
@@ -125,6 +132,18 @@ class BaseViewModelFactory (val application: Application,val activity: Activity)
             return RejectionPutAwayViewModel(application,activity) as T
         else if (modelClass.isAssignableFrom(AddItemScreenViewModel::class.java))
             return AddItemScreenViewModel(application,activity) as T
+        else if (modelClass.isAssignableFrom(TruckListViewModel::class.java))
+            return TruckListViewModel(application,activity) as T
+        else if (modelClass.isAssignableFrom(ConfirmArrivalViewModel::class.java))
+            return ConfirmArrivalViewModel(application,activity) as T
+        else if (modelClass.isAssignableFrom(RegisterArrivalViewModel::class.java))
+            return RegisterArrivalViewModel(application,activity) as T
+        else if (modelClass.isAssignableFrom(CheckInViewModel::class.java))
+        return CheckInViewModel(application,activity) as T
+        else if (modelClass.isAssignableFrom(CheckInTruckListViewModel::class.java))
+            return CheckInTruckListViewModel(application,activity) as T
+        else if (modelClass.isAssignableFrom(UpdateApkViewModel::class.java))
+            return UpdateApkViewModel(application,activity) as T
         throw IllegalArgumentException("View model not found")
     }
 }

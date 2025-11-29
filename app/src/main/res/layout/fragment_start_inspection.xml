@@ -213,7 +213,7 @@
             android:maxLines="1"
             android:singleLine="true"
             android:inputType="number"
-            android:digits="0123456789"/>
+            android:digits="0123456789."/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

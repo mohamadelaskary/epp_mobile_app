@@ -38,7 +38,7 @@ data class AuditOrder(
                 val alreadyAddedLocator = locators.find { it.locatorCode== locator.locatorCode}
                 if (alreadyAddedLocator==null){
                     locators.add(locator)
-                    if (locator.countingQty==0||locator.countingQty==null) isFullyScanned = false
+                    if (locator.countingQty==0.0||locator.countingQty==null) isFullyScanned = false
                 }
             }
         }

@@ -7,8 +7,7 @@
     tools:context=".Ui.Issue.EppOrganizations.TransactMoveOrderChemicalFactory.TransactMoveOrderFragment">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".Ui.Issue.EppOrganizations.TransactMoveOrderChemicalFactory.TransactMoveOrderFragment">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/move_order_number"
@@ -66,6 +65,7 @@
         app:layout_constraintEnd_toEndOf="@+id/info"
         app:layout_constraintStart_toEndOf="@+id/move_order_number"
         app:layout_constraintTop_toTopOf="@+id/info" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/data_group"
         android:layout_width="match_parent"
@@ -159,6 +159,7 @@
                 android:maxLines="1"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/clear_item"
             android:layout_width="52dp"
@@ -175,6 +176,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/item_code"
             app:layout_constraintEnd_toEndOf="@+id/item_code"
             app:layout_constraintTop_toTopOf="@+id/item_code" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/show_lines_list_dialog"
             android:layout_width="52dp"
@@ -198,11 +200,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16sp"
+            android:layout_marginEnd="10dp"
             android:gravity="center"
             android:text="Gasket S.S.  1½ #600 Inner Ring SS  Outer Ring C.S Graphite"
             android:textSize="17sp"
-            app:layout_constraintEnd_toStartOf="@+id/on_hand_title"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toEndOf="@+id/on_hand_qty"
+            app:layout_constraintEnd_toStartOf="@+id/on_hand_qty"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_code" />
 
@@ -222,38 +226,41 @@
             style="@style/on_hand_qty_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
             android:gravity="center"
             android:text="50"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="@+id/item_desc"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/item_desc"
             app:layout_constraintStart_toStartOf="@+id/on_hand_title"
             app:layout_constraintTop_toTopOf="@+id/item_desc" />
 
-<!--        <RadioGroup-->
-<!--            android:id="@+id/issue_type_group"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:gravity="center"-->
-<!--            android:orientation="horizontal"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/item_desc">-->
+        <!--        <RadioGroup-->
+        <!--            android:id="@+id/issue_type_group"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="16dp"-->
+        <!--            android:gravity="center"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/item_desc">-->
 
-<!--            <RadioButton-->
-<!--                android:id="@+id/allocate_only"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginEnd="16dp"-->
-<!--                android:checked="true"-->
-<!--                android:text="@string/allocate" />-->
+        <!--            <RadioButton-->
+        <!--                android:id="@+id/allocate_only"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginEnd="16dp"-->
+        <!--                android:checked="true"-->
+        <!--                android:text="@string/allocate" />-->
 
-<!--            <RadioButton-->
-<!--                android:id="@+id/transact_only"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/transact" />-->
+        <!--            <RadioButton-->
+        <!--                android:id="@+id/transact_only"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="@string/transact" />-->
 
-<!--        </RadioGroup>-->
+        <!--        </RadioGroup>-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/allocate_group"
@@ -272,6 +279,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="@string/sub_inventory_from"
+                android:enabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -285,7 +293,8 @@
                     android:inputType="none"
                     android:lines="1"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:enabled="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -295,6 +304,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="@string/locator"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -318,8 +328,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:enabled="false"
                 android:hint="@string/qty"
+                android:enabled="false"
                 app:layout_constraintEnd_toStartOf="@+id/qty"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -329,6 +339,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:digits="0123456789."
+                    android:focusable="false"
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:lines="1"
@@ -366,6 +377,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="@string/sub_inventory_to"
+                android:enabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"

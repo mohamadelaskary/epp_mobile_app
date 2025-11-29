@@ -15,6 +15,7 @@ import net.gbs.epp_project.Ui.SplashAndSignIn.SignInFragment.Companion.USER
 import net.gbs.epp_project.databinding.FragmentMainMenuBinding
 import java.util.Timer
 import kotlin.concurrent.schedule
+import androidx.navigation.findNavController
 
 class MainMenuFragment : Fragment() {
 
@@ -31,11 +32,14 @@ class MainMenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handleAuthority()
+        binding.gateModule.setOnClickListener {
+            it.findNavController().navigate(R.id.action_mainMenuFragment_to_gate_nav_graph)
+        }
         binding.audit.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_mainMenuFragment_to_auditMenuFragment)
+            it.findNavController().navigate(R.id.action_mainMenuFragment_to_auditMenuFragment)
         }
         binding.issue.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_mainMenuFragment_to_issueMenuFragment)
+            it.findNavController().navigate(R.id.action_mainMenuFragment_to_issueMenuFragment)
         }
 
         binding.receiving.setOnClickListener {

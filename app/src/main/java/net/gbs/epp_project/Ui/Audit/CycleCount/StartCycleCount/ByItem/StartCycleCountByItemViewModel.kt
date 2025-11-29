@@ -45,7 +45,7 @@ class StartCycleCountByItemViewModel(private val application: Application,activi
     val saveCycleCountStatus = SingleLiveEvent<StatusWithMessage>()
     val saveCycleCountLiveData = SingleLiveEvent<CycleCountHeader>()
 
-    fun saveCycleCount(itemCode:String,locatorCode: String,cycleCountHeaderId:Int,qty:Int,orgCode:String){
+    fun saveCycleCount(itemCode:String,locatorCode: String,cycleCountHeaderId:Int,qty:Double,orgCode:String){
         saveCycleCountStatus.postValue(StatusWithMessage(Status.LOADING))
         job = CoroutineScope(Dispatchers.IO).launch {
             try {

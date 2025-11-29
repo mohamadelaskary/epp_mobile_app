@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_subinventory"
-            app:layout_constraintBottom_toBottomOf="@id/sub_inventory_from"
+            app:layout_constraintBottom_toBottomOf="@+id/sub_inventory_from"
             app:layout_constraintEnd_toStartOf="@+id/sub_inventory_from"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,36 +64,12 @@
             android:id="@+id/sub_inventory_from"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
-            android:text="dagdfgdifjdfgjifhdfgl;;ldhjdf;jdfg;dfjpodfjgjgdp"
-            app:layout_constraintBottom_toBottomOf="@+id/sub_inventory_icon"
-            app:layout_constraintEnd_toStartOf="@+id/arrow_icon"
-            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_marginTop="10dp"
+            android:text="jdfg;dfjpodfjgjgdp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/sub_inventory_icon"
             app:layout_constraintTop_toBottomOf="@+id/item_code" />
-
-        <ImageView
-            android:id="@+id/arrow_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_forward_24"
-            app:layout_constraintBottom_toBottomOf="@+id/sub_inventory_from"
-            app:layout_constraintEnd_toStartOf="@+id/sub_inventory_to"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/sub_inventory_from"
-            app:layout_constraintTop_toTopOf="@+id/sub_inventory_from"/>
-
-        <TextView
-            android:id="@+id/sub_inventory_to"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="VDDFgldfgjaldfkh;gdlsfjgdf'oigjd'foijgdf'ijgdgi"
-            app:layout_constraintBottom_toBottomOf="@+id/sub_inventory_from"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/arrow_icon"
-            app:layout_constraintTop_toTopOf="@+id/sub_inventory_from" />
 
         <ImageView
             android:id="@+id/imageView9"
@@ -145,11 +121,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/sub_inventory_icon"
             app:layout_constraintTop_toBottomOf="@+id/locator_from" />
+
         <androidx.constraintlayout.widget.Group
             android:id="@+id/lot_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="imageView10,lots"/>
+            app:constraint_referenced_ids="imageView10,lots" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -267,6 +267,7 @@ class StartTransferFragment : BaseFragmentWithViewModel<StartTransferViewModel,F
             binding.locatorFromSpinner.setText(itemData[0].locator)
             selectedItemData = itemData[0]
         }
+        viewModel.getSubInvertoryList(orgId)
     }
 
 //    private fun observeGettingDate() {
@@ -456,7 +457,7 @@ class StartTransferFragment : BaseFragmentWithViewModel<StartTransferViewModel,F
         changeFragmentTitle(getString(R.string.start_transfer),requireActivity())
         showBackButton(requireActivity())
 //        viewModel.getTodayDate()
-        viewModel.getSubInvertoryList(orgId)
+
         binding.date.editText?.setText(viewModel.getDisplayTodayDate())
         barcodeReader.onResume()
     }

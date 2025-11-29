@@ -7,6 +7,7 @@ import android.view.View.OnClickListener
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.navigation.fragment.findNavController
 import net.gbs.epp_project.Base.BaseFragmentWithViewModel
 import net.gbs.epp_project.Base.BundleKeys.PO_ITEMS_LIST_KEY
 import net.gbs.epp_project.Base.BundleKeys.PO_LINE_KEY
@@ -160,8 +161,8 @@ class AddItemScreenFragment : BaseFragmentWithViewModel<AddItemScreenViewModel,F
                         lots = lotQtyList,
                         quantityReturned = calculateReturnQty()
                     )
-                    navController.previousBackStackEntry?.savedStateHandle?.set(PO_LINE_KEY, poLineReturn)
-                    navController.popBackStack()
+                    findNavController().previousBackStackEntry?.savedStateHandle?.set(PO_LINE_KEY, poLineReturn)
+                    findNavController().popBackStack()
                 }
             }
         }

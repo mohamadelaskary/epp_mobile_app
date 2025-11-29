@@ -59,7 +59,7 @@ class PutAwayFragment : BaseFragmentWithViewModel<PutAwayViewModel,FragmentPutAw
         viewModel.poDetailsItemsLiveData.observe(requireActivity()) { it ->
             val itemList = mutableListOf<PODetailsItem2>()
             it.forEach {
-                    if (it.itemqtyAccepted!=0) {
+                    if (it.itemqtyAccepted!=0.0) {
                         if(it.isinspected.toBoolean() && !it.isdelivered.toBoolean())
                             itemList.add(it)
                     }

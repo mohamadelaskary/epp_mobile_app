@@ -21,6 +21,7 @@ import net.gbs.epp_project.Base.BundleKeys.PO_DETAILS_ITEM_2_Key
 import net.gbs.epp_project.Base.BundleKeys.PUT_AWAY_REJECT
 import net.gbs.epp_project.Model.DeliverLot
 import net.gbs.epp_project.Model.Locator
+import net.gbs.epp_project.Model.Lot
 import net.gbs.epp_project.Model.PODetailsItem2
 import net.gbs.epp_project.Model.Status
 import net.gbs.epp_project.Model.SubInventory
@@ -59,6 +60,7 @@ class StartPutAwayFragment : BaseFragmentWithViewModel<StartPutAwayViewModel,Fra
     }
 
     private var isRejected = false
+    var itemId : Int? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         barcodeReader = ZebraScanner(requireActivity(),this)
@@ -66,8 +68,8 @@ class StartPutAwayFragment : BaseFragmentWithViewModel<StartPutAwayViewModel,Fra
         isRejected = requireArguments().getBoolean(PUT_AWAY_REJECT)
 
         viewModel.getSubInventoryList(poDetailsItem.shipToOrganizationId!!)
-        val itemId = poDetailsItem.inventoryItemId
-        viewModel.getLotList(poDetailsItem.shipToOrganizationId!!,itemId,null)
+        itemId = poDetailsItem.inventoryItemId
+
 
         setUpSubInventorySpinner()
         observeGetSubInventoryList()
@@ -91,6 +93,8 @@ class StartPutAwayFragment : BaseFragmentWithViewModel<StartPutAwayViewModel,Fra
         EditTextActionHandler.OnEnterKeyPressed(binding.locator) {
             val locatorCode = getEditTextText(binding.locator)
             selectedLocator = locatorList.find { it.locatorCode == locatorCode }
+            binding.lotSerial.isEnabled = false;
+            viewModel.getLotList(poDetailsItem.shipToOrganizationId!!,itemId,selectedSubInventory?.subInventoryCode!!,locatorCode)
             if (selectedLocator!=null) {
                 binding.locator.editText?.setText(locatorCode)
             } else {
@@ -133,6 +137,10 @@ class StartPutAwayFragment : BaseFragmentWithViewModel<StartPutAwayViewModel,Fra
         }
         viewModel.getLocatorListLiveData.observe(requireActivity()){
             locatorList = it
+            if (locatorList.isNotEmpty()) {
+                binding.locator.visibility = VISIBLE
+            } else
+                binding.locator.visibility = GONE
 //            locatorAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,locatorList)
 //            binding.locatorSpinner.setAdapter(locatorAdapter)
         }
@@ -156,7 +164,8 @@ class StartPutAwayFragment : BaseFragmentWithViewModel<StartPutAwayViewModel,Fra
         binding.subInventorySpinner.setAdapter(subInventoryAdapter)
         binding.subInventorySpinner.setOnItemClickListener { adapterView, view, position, l ->
             selectedSubInventory = subInventoryList[position]
-            viewModel.getLocatorList(poDetailsItem.shipToOrganizationId!!,selectedSubInventory?.subInventoryCode!!)
+            viewModel.getLocatorList(poDetailsItem.shipToOrganizationId!!,selectedSubInventory?.subInventoryCode!!,poDetailsItem.inventoryItemId!!)
+            viewModel.getLotList(poDetailsItem.shipToOrganizationId!!,itemId,selectedSubInventory?.subInventoryCode!!,null)
         }
     }
 
@@ -178,8 +187,8 @@ class StartPutAwayFragment : BaseFragmentWithViewModel<StartPutAwayViewModel,Fra
         }
     }
 
-    private var lotList:List<DeliverLot> = listOf()
-    private lateinit var lotAdapter: ArrayAdapter<DeliverLot>
+    private var lotList:List<Lot> = listOf()
+    private lateinit var lotAdapter: ArrayAdapter<Lot>
 //    private var selectedLot:Lot? = null
     private fun setUpLotSpinner() {
         lotAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,lotList)
@@ -198,15 +207,17 @@ class StartPutAwayFragment : BaseFragmentWithViewModel<StartPutAwayViewModel,Fra
                     loadingDialog!!.hide()
 //                    warningDialog(requireContext(),it.message)
                     binding.lotSerial.visibility = GONE
+                    binding.lotSerial.isEnabled = false
                 }
             }
         }
         viewModel.getLotListLiveData.observe(requireActivity()){
             if (it.isEmpty()){
                 binding.lotSerial.visibility = GONE
+                binding.lotSerial.isEnabled = false
             } else {
                 binding.lotSerial.visibility = VISIBLE
-
+                binding.lotSerial.isEnabled = true
             }
             lotList = it
             lotAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,lotList)
@@ -278,17 +289,23 @@ class StartPutAwayFragment : BaseFragmentWithViewModel<StartPutAwayViewModel,Fra
                     try {
 //                        Log.d(TAG, "onClick: ${selectedLot}")
 //                        val lotNum = if (selectedLot==null) getEditTextText(binding.lotSerial) else selectedLot?.lotName
+                        var locatorCode =
+                            if (getEditTextText(binding.locator).isEmpty())
+                                null
+                            else
+                                getEditTextText(binding.locator)
                         viewModel.PutAwayMaterial(
                             poHeaderId = poDetailsItem.poHeaderId!!,
                             poLineId = poDetailsItem.poLineId!!,
-                            locator_id = selectedLocator?.locatorId,
+                            locator_code = locatorCode,
                             subinventory_code = selectedSubInventory?.subInventoryCode!!,
                             shipToOrganizationId = poDetailsItem.shipToOrganizationId!!,
                             receiptNo = poDetailsItem.receiptno!!,
                             transactionDate = viewModel.getTodayDate(),
                             acceptedQty = poDetailsItem.itemqtyAccepted!!,
                             lot_num = getEditTextText(binding.lotSerial),
-                            isRejected = isRejected
+                            isRejected = isRejected,
+                            isFullControl = poDetailsItem.mustHaveLot()
                         )
                     } catch (ex:Exception){
                         warningDialog(requireContext(),getString(R.string.error_in_saving_data))
@@ -299,27 +316,7 @@ class StartPutAwayFragment : BaseFragmentWithViewModel<StartPutAwayViewModel,Fra
             }
         }
     }
-//    private fun observeGettingDate() {
-//        viewModel.getDateStatus.observe(requireActivity()){
-//            when(it.status){
-//                Status.LOADING  -> {
-//                    loadingDialog!!.show()
-//                    binding.dateEditText.isEnabled = false
-//                }
-//                Status.SUCCESS ->{
-//                    loadingDialog!!.hide()
-//                    binding.dateEditText.isEnabled = false
-//                }
-//                else -> {
-//                    loadingDialog!!.hide()
-//                    binding.dateEditText.isEnabled = true
-//                }
-//            }
-//        }
-//        viewModel.getDateLiveData.observe(requireActivity()){
-//            binding.dateEditText.setText(it.substring(0,10))
-//        }
-//    }
+
     private fun readyToSave(): Boolean {
         val itemCode = binding.itemCode.editText?.text.toString().trim()
         val subInventory = binding.subInventory.editText?.text.toString().trim()
@@ -327,14 +324,18 @@ class StartPutAwayFragment : BaseFragmentWithViewModel<StartPutAwayViewModel,Fra
         val lot          = binding.lotSerial.editText?.text.toString().trim()
         var isReady = true
         selectedDate = binding.transactionDate.editText?.text.toString()
+        if(!locatorList.isEmpty()) {
+            val locatorData = locatorList.find { it.locatorCode == locator }
+            if (locatorData == null) {
+                binding.locator.error = getString(R.string.wrong_locator)
+                isReady = false
+            }
+        }
         if (selectedDate!!.isEmpty()){
             binding.transactionDate.error = getString(R.string.please_select_date)
             isReady = false
         }
-//        if (lot.isEmpty()){
-//            binding.lotSerial.error = getString(R.string.please_select_lot)
-//            isReady = false
-//        }
+
         if (itemCode.isEmpty()){
             binding.itemCode.error = getString(R.string.please_scan_item_code)
             isReady =  false
@@ -451,10 +452,9 @@ class StartPutAwayFragment : BaseFragmentWithViewModel<StartPutAwayViewModel,Fra
         if (selectedSubInventory!=null) {
             selectedLocator = locatorList.find { it.locatorCode == scannedCode }
             if (selectedLocator != null) {
-                Log.d(TAG, "onViewCreated: ${binding.locator.editText?.isFocused!!}")
-                if (!binding.locator.editText?.isFocused!!)
+//                if (!binding.locator.editText?.isFocused!!)
                     binding.locator.editText?.setText(scannedCode)
-                binding.locator.editText?.clearFocus()
+//                binding.locator.editText?.clearFocus()
             } else {
                 binding.locator.error = getString(R.string.wrong_locator)
             }

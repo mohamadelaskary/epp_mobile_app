@@ -49,7 +49,7 @@ class IssueMenuFragment : Fragment() {
                     .navigate(R.id.action_issueMenuFragment_to_transactMoveOrderFragment, bundle)
             } else {
                 warningDialog(requireContext(),
-                    getString(R.string.this_user_isn_t_authorized_to_select_that_organization))
+                    getString(R.string.the_organization_efo_is_not_assigned_to_the_logged_in_user))
             }
         }
         
@@ -61,7 +61,7 @@ class IssueMenuFragment : Fragment() {
                 Navigation.findNavController(it).navigate(R.id.action_issueMenuFragment_to_transactSparePartsWorkOrderFragment,bundle)
             } else {
                 warningDialog(requireContext(),
-                    getString(R.string.this_user_isn_t_authorized_to_select_that_organization))
+                    getString(R.string.the_organization_esp_is_not_assigned_to_the_logged_in_user))
             }
         }
         binding.indirectChemicals.setOnClickListener {
@@ -72,7 +72,7 @@ class IssueMenuFragment : Fragment() {
                 Navigation.findNavController(it).navigate(R.id.action_issueMenuFragment_to_transactSparePartsWorkOrderFragment,bundle)
             } else {
                 warningDialog(requireContext(),
-                    getString(R.string.this_user_isn_t_authorized_to_select_that_organization))
+                    getString(R.string.the_organization_esp_is_not_assigned_to_the_logged_in_user))
             }
         }
 

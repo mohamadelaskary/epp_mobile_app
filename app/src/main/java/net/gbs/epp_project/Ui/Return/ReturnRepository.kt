@@ -1,6 +1,7 @@
 package net.gbs.epp_project.Ui.Return
 
 import android.app.Activity
+import android.content.Context
 import net.gbs.epp_project.Base.BaseRepository
 import net.gbs.epp_project.Model.ApiRequestBody.ReturnMaterialBody
 import net.gbs.epp_project.Model.ApiRequestBody.ReturnToWarehouseItemsBody
@@ -8,7 +9,7 @@ import net.gbs.epp_project.Model.Response.NoDataResponse
 import net.gbs.epp_project.Ui.SplashAndSignIn.SignInFragment
 import retrofit2.Response
 
-class ReturnRepository (activity: Activity) : BaseRepository(activity = activity) {
+class ReturnRepository (context: Context) : BaseRepository(context) {
     suspend fun getPurchaseOrderByPoNo(poNum:String) = apiInterface.getPurchaseOrderGetByPoNo(userId!!,deviceSerialNo,lang,poNum)
     suspend fun getPurchaseOrderItemListReturn(poNum:String) = apiInterface.getPurchaseOrderItemListReturn(userId!!,deviceSerialNo,lang,poNum)
     suspend fun returnMaterial(
@@ -36,10 +37,12 @@ class ReturnRepository (activity: Activity) : BaseRepository(activity = activity
     suspend fun getOrganizations() = apiInterface.getOrganizationsList(userId!!,deviceSerialNo,lang)
     suspend fun getLocatorList(
         orgId:Int,
-        subInvCode:String
-    ) = apiInterface.getLocatorList(
+        subInvCode:String,
+        itemId:Int
+    ) = apiInterface.getLocatorListByItemId(
         orgId = orgId.toString(),
-        subinv_code = subInvCode
+        subinv_code = subInvCode,
+        itemId = itemId
     )
     suspend fun getReturnWorkOrdersList(orgId:Int) = apiInterface.getWorkOrderList_ReturnMaterialToInventory(userId!!,deviceSerialNo,lang,orgId,100)
     suspend fun getReturnWorkOrderLinesList(orgId:Int,headerId:Int) = apiInterface.getReturnWorkOrderLinesGetByHEADER_ID(userId!!,deviceSerialNo,lang,orgId,headerId)

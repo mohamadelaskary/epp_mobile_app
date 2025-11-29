@@ -13,7 +13,7 @@ data class TransactItemsBody (
     @SerializedName("program_application_id" ) var programApplicationId : Int?    = null,
     @SerializedName("program_id"             ) var programId            : Int?    = null,
     @SerializedName("deviceSerialNo"         ) var deviceSerialNo       : String? = null,
-    @SerializedName("transaction_date"         ) var transaction_date       : String?          = null,
+    @SerializedName("transaction_date"       ) var transaction_date       : String?          = null,
     @SerializedName("applang"                ) var appLang              : String? = null,
-    @SerializedName("is_FinalProduct"                ) var isFinalProducts              : Boolean? = null,
+    @SerializedName("is_FinalProduct"        ) var isFinalProducts              : Boolean? = null,
 )

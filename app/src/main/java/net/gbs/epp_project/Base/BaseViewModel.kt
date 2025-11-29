@@ -67,7 +67,6 @@ open class BaseViewModel (private val application: Application,private val activ
     fun getDeviceTodayDate():String{
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val date = FormatDateTime(sdf.format(Date()))
-        Log.d(TAG, "getDeviceTodayDate: ${date.year()}-${date.month()}-${date.day()} ${date.hours()}:${date.minutes()}:00")
         return "${date.year()}-${date.month()}-${date.day()} ${date.hours()}:${date.minutes()}:00"
     }
 }

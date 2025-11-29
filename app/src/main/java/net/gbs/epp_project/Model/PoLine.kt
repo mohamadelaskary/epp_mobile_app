@@ -8,5 +8,5 @@ data class PoLine(
     @SerializedName("po_header_id"            ) var poHeaderId           : Int? = null,
     @SerializedName("receipt_num"             ) var receiptNum           : String? = null,
     @SerializedName("po_line_id"              ) var poLineId             : Int? = null,
-    @SerializedName("quantity_received"       ) var quantityReceived     : Int? = null
+    @SerializedName("quantity_received"       ) var quantityReceived     : Double? = null
 )

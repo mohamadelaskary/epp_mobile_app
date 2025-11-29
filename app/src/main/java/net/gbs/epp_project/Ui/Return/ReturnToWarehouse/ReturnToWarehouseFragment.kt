@@ -293,7 +293,7 @@ class ReturnToWarehouseFragment : BaseFragmentWithViewModel<ReturnToWarehouseVie
     private fun setUpSubInventorySpinner() {
         binding.subInventoryToSpinner.setOnItemClickListener { _, _, selectedIndex, _ ->
             selectedSubInventoryCodeTo = subInventoryList[selectedIndex].subInventoryCode
-            viewModel.getLocatorsList(orgId, selectedSubInventoryCodeTo!!)
+            viewModel.getLocatorsList(orgId, selectedSubInventoryCodeTo!!,scannedItem?.inventorYITEMID!!)
         }
     }
 

@@ -1,8 +1,10 @@
 package net.gbs.epp_project.Ui.Receiving.EppOrganizations.Receive.StartReceiving
 
 import android.app.DatePickerDialog
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -11,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
+import androidx.navigation.fragment.findNavController
 
 import com.google.gson.Gson
 
@@ -24,6 +27,7 @@ import net.gbs.epp_project.Model.Status
 import net.gbs.epp_project.R
 import net.gbs.epp_project.Tools.EditTextActionHandler
 import net.gbs.epp_project.Tools.Tools.attachButtonsToListener
+import net.gbs.epp_project.Tools.Tools.back
 import net.gbs.epp_project.Tools.Tools.changeFragmentTitle
 import net.gbs.epp_project.Tools.Tools.clearInputLayoutError
 import net.gbs.epp_project.Tools.Tools.getEditTextText
@@ -136,11 +140,13 @@ class StartReceiveFragment : BaseFragmentWithViewModel<StartReceiveViewModel,Fra
                 Status.SUCCESS -> {
                     loadingDialog!!.hide()
                     successDialog(requireContext(),"Saved successfully\nReceipt number:${binding.receiptNo.editText?.text.toString()}")
-                    clearOrganizationData()
+//                    clearOrganizationData()
+                    back(this)
                 }
                 else -> {
                     loadingDialog!!.hide()
                     warningDialog(requireContext(),it.message)
+                    Log.e(TAG, "observeReceivingItems: ${it.message}", )
 //                    successDialog(requireContext(),"Saved successfully\nReceipt number:${binding.receiptNo.editText?.text.toString()}")
 //                    clearOrganizationData()
                 }
@@ -153,7 +159,6 @@ class StartReceiveFragment : BaseFragmentWithViewModel<StartReceiveViewModel,Fra
         binding.itemDataGroup.visibility = GONE
         binding.qty.editText?.setText("")
         binding.receiptNo.editText?.setText("")
-        binding.transactionDate.editText?.setText("")
         binding.itemCode.editText?.setText("")
         itemsDialog.itemsList = listOf()
         poLines = mutableListOf()
@@ -188,6 +193,7 @@ class StartReceiveFragment : BaseFragmentWithViewModel<StartReceiveViewModel,Fra
                 else -> {
                     loadingDialog!!.hide()
                     warningDialog(requireContext(),it.message)
+                    Log.e(TAG, "observeGetPreviousReceiptNo: ${it.message}", )
                 }
             }
         }
@@ -210,6 +216,7 @@ class StartReceiveFragment : BaseFragmentWithViewModel<StartReceiveViewModel,Fra
                 else -> {
                     loadingDialog!!.hide()
                     warningDialog(requireContext(),it.message)
+                    Log.e(TAG, "observeGetNewReceiptNo: ${it.message}", )
                 }
             }
         }
@@ -227,6 +234,7 @@ class StartReceiveFragment : BaseFragmentWithViewModel<StartReceiveViewModel,Fra
                 else -> {
                     loadingDialog!!.hide()
                     warningDialog(requireContext(),it.message)
+                    Log.e(TAG, "observeOrganizations: ${it.message}", )
                 }
             }
         }
@@ -249,7 +257,13 @@ class StartReceiveFragment : BaseFragmentWithViewModel<StartReceiveViewModel,Fra
         organizationsAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,poOrganizations)
         binding.organizationSpinner.setAdapter(organizationsAdapter)
         binding.organizationSpinner.setOnItemClickListener{ _: AdapterView<*>, _: View, position: Int, _: Long ->
-            val userOrganization = USER?.organizations?.find { it.orgId==poOrganizations[position].organizationId }
+
+
+            val userOrganization = USER?.organizations?.find {
+                Log.d(TAG, "setUpOrganizationsSpinner: PoOrganization${poOrganizations[position].organizationId}")
+                Log.d(TAG, "setUpOrganizationsSpinner: userOrganizations${it.orgId}")
+                it.orgId==poOrganizations[position].organizationId
+            }
             if (userOrganization!=null) {
                 selectedOrganization = poOrganizations[position]
                 viewModel.getPurchaseOrderDetailsList(
@@ -259,6 +273,7 @@ class StartReceiveFragment : BaseFragmentWithViewModel<StartReceiveViewModel,Fra
                 binding.isNewReceiptNo.isChecked = true
             } else {
                 warningDialog(requireContext(),getString(R.string.this_user_isn_t_authorized_to_select_that_organization))
+                Log.e(TAG, "setUpOrganizationsSpinner: ${getString(R.string.this_user_isn_t_authorized_to_select_that_organization)}", )
             }
         }
     }
@@ -271,6 +286,7 @@ class StartReceiveFragment : BaseFragmentWithViewModel<StartReceiveViewModel,Fra
                 else -> {
                     loadingDialog!!.hide()
                     warningDialog(requireContext(),it.message)
+                    Log.e(TAG, "observeItemsList: ${it.message}", )
                 }
             }
         }
@@ -314,9 +330,11 @@ class StartReceiveFragment : BaseFragmentWithViewModel<StartReceiveViewModel,Fra
                             requireContext(),
                             getString(R.string.enter_receiving_data_first)
                         )
+                        Log.e(TAG, "onClick: "+getString(R.string.enter_receiving_data_first), )
                     }
                 } catch (ex:Exception){
                     warningDialog(requireContext(),"po_header_id = ${selectedPoLine?.poHeaderId!!},\ntransactionDate = $selectedDate,\n receivedListSize = ${poLines.size}")
+                    Log.e(TAG, "onClick: ", ex)
                 }
             }
             R.id.po_details -> {
@@ -330,12 +348,12 @@ class StartReceiveFragment : BaseFragmentWithViewModel<StartReceiveViewModel,Fra
             R.id.received_list -> {
                 val bundle = Bundle()
                 bundle.putString(PURCHASE_ORDER_KEY,PurchaseOrder.toJson(purchaseOrder))
-                navController.navigate(R.id.action_startReceiveFragment_to_itemInfoFragment,bundle)
+                findNavController().navigate(R.id.action_startReceiveFragment_to_itemInfoFragment,bundle)
             }
             R.id.add -> {
                 val receivedQty = getEditTextText(binding.qty)
                 try {
-                    if (receivedQty.toInt()<=selectedPoLine?.remainingQty!!){
+                    if (receivedQty.toDouble()<=selectedPoLine?.remainingQty!!){
                         handleDataFound(receivedQty)
                     } else binding.qty.error = getString(R.string.please_enter_valid_receive_qty)
                 } catch (ex:NumberFormatException){
@@ -361,6 +379,7 @@ class StartReceiveFragment : BaseFragmentWithViewModel<StartReceiveViewModel,Fra
         }
         if (receivedLines.isEmpty()){
             warningDialog(requireContext(), getString(R.string.please_add_items_to_be_received))
+            Log.e(TAG, "isReadyToSave: "+getString(R.string.please_add_items_to_be_received), )
             isReady = false
         }
         return  isReady
@@ -397,13 +416,13 @@ class StartReceiveFragment : BaseFragmentWithViewModel<StartReceiveViewModel,Fra
 
     private fun handleDataFound(receivedQty:String) {
         selectedPoLine?.let {
-            it.currentReceivedQty = receivedQty.toInt()
+            it.currentReceivedQty = receivedQty.toDouble()
             it.isAdded = true
             receivedLines.add(it)
             receivedPOItemAdapter.notifyDataSetChanged()
             val poLine = PoLine(
                 poLineId = it.poLineId!!,
-                quantityReceived = receivedQty.toInt(),
+                quantityReceived = receivedQty.toDouble(),
                 shipToOrganizationId = it.shipToOrganizationId!!,
                 shipToLocationId = it.shipToLocationId!!,
                 receiptNum = binding.receiptNo.editText?.text.toString().trim()

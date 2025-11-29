@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import net.gbs.epp_project.Base.BaseFragmentWithViewModel
 import net.gbs.epp_project.Model.AuditOrder
 import net.gbs.epp_project.Model.NavigationKeys.AUDIT_ORDER_KEY
@@ -70,7 +71,7 @@ class FinishTrackingAuditListFragment : BaseFragmentWithViewModel<FinishTracking
     override fun OnItemClicked(position: Int) {
         val bundle = Bundle()
         bundle.putString(AUDIT_ORDER_KEY,AuditOrder.toJson(auditOrder = auditOrdersList[position]))
-        navController.navigate(R.id.action_finishTrackingAuditListFragment_to_startFinishTrackingFragment,bundle)
+        findNavController().navigate(R.id.action_finishTrackingAuditListFragment_to_startFinishTrackingFragment,bundle)
     }
 
 }

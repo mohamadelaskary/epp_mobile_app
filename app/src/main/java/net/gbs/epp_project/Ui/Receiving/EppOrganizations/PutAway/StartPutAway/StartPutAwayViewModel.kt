@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.gbs.epp_project.Base.BaseViewModel
 import net.gbs.epp_project.Model.ApiRequestBody.MobileLogBody
+import net.gbs.epp_project.Model.ApiRequestBody.PutawayMaterialBody
 import net.gbs.epp_project.Model.DeliverLot
 import net.gbs.epp_project.Model.Locator
 import net.gbs.epp_project.Model.Lot
@@ -19,6 +20,7 @@ import net.gbs.epp_project.Tools.ResponseDataHandler
 import net.gbs.epp_project.Tools.ResponseHandler
 import net.gbs.epp_project.Tools.SingleLiveEvent
 import net.gbs.epp_project.Ui.SplashAndSignIn.SignInFragment
+import net.gbs.epp_project.Ui.SplashAndSignIn.SignInFragment.Companion.EMPLOYEE_ID
 import net.gbs.epp_project.Ui.SplashAndSignIn.SignInFragment.Companion.USER
 
 class StartPutAwayViewModel(private val app:Application,val activity: Activity) : BaseViewModel(app,activity) {
@@ -31,27 +33,36 @@ class StartPutAwayViewModel(private val app:Application,val activity: Activity) 
         poLineId: Int,
         receiptNo: String,
         shipToOrganizationId: Int,
-        locator_id: Int?,
+        locator_code: String?,
         subinventory_code:String,
         transactionDate:String,
-        acceptedQty :Int,
+        acceptedQty :Double,
         lot_num:String?,
-        isRejected: Boolean
+        isRejected: Boolean,
+        isFullControl: Boolean
     ) {
         putAwayStatus.postValue(StatusWithMessage(Status.LOADING))
         job = CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = receivingRepository.PutAwayMaterial(
+                val body = PutawayMaterialBody(
+                    employeeId = EMPLOYEE_ID,
+                    userId = receivingRepository.userId!!,
                     poHeaderId = poHeaderId,
                     poLineId = poLineId,
-                    receiptNo = receiptNo,
+                    locatorCode = locator_code,
+                    subinventoryCode = subinventory_code,
+                    receiptno = receiptNo,
                     shipToOrganizationId = shipToOrganizationId,
-                    locator_id = locator_id,
-                    subinventory_code = subinventory_code,
                     transactionDate = transactionDate,
-                    acceptedQty = acceptedQty,
+                    applang = lang,
+                    deviceSerialNo = deviceSerialNo,
                     lotNum = lot_num,
+                    isFullControl = isFullControl,
+                    userID = receivingRepository.userId,
                     isRejected = isRejected
+                )
+                val response = receivingRepository.PutAwayMaterial(
+                    body
                 )
                 ResponseHandler(response,putAwayStatus,app).handleData("PutawayMaterial")
                 if (response.body()?.responseStatus?.errorMessage!=null)
@@ -59,7 +70,7 @@ class StartPutAwayViewModel(private val app:Application,val activity: Activity) 
                         MobileLogBody(
                             userId = SignInFragment.USER?.notOracleUserId,
                             errorMessage = response.body()?.responseStatus?.errorMessage,
-                            apiName = "PutawayMaterial"
+                            apiName = "PutawayMaterial ${body.toJson()}"
                         )
                     )
             } catch (ex:Exception){
@@ -91,10 +102,10 @@ class StartPutAwayViewModel(private val app:Application,val activity: Activity) 
             }
         }
     }
-    fun getLocatorList(org_id:Int, subInventoryCode:String){
+    fun getLocatorList(org_id:Int, subInventoryCode:String,itemId:Int){
         job = CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = receivingRepository.getLocatorList(org_id,subInventoryCode)
+                val response = receivingRepository.getLocatorList(org_id,subInventoryCode,itemId)
                 ResponseDataHandler(response,getLocatorListLiveData,getLocatorListStatus,app).handleData("LocatorList")
                 if (response.body()?.responseStatus?.errorMessage!=null)
                     receivingRepository.MobileLog(
@@ -109,13 +120,13 @@ class StartPutAwayViewModel(private val app:Application,val activity: Activity) 
             }
         }
     }
-    val getLotListLiveData = SingleLiveEvent<List<DeliverLot>>()
+    val getLotListLiveData = SingleLiveEvent<List<Lot>>()
     val getLotListStatus = SingleLiveEvent<StatusWithMessage>()
 
-    fun getLotList(orgId:Int,itemId:Int?,subInvCode:String?){
+    fun getLotList(orgId:Int,itemId:Int?,subInvCode:String?,locatorCode:String?){
         job = CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = receivingRepository.getDeliverLotList(orgId.toString(),itemId,subInvCode)
+                val response = receivingRepository.getDeliverLotList(orgId.toString(),itemId,subInvCode, locatorCode = locatorCode)
                 ResponseDataHandler(response,getLotListLiveData,getLotListStatus,app).handleData("LotList")
                 if (response.body()?.responseStatus?.errorMessage!=null)
                     receivingRepository.MobileLog(

@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Epp_Project" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+         <item name="colorPrimary">@color/orange</item>
     </style>
     <style name="on_hand_qty_style">
         <item name="android:textColor">#7FEF84</item>
@@ -10,4 +10,34 @@
     <style name="to_be_issued_qty_style">
         <item name="android:textColor">#1976D2</item>
     </style>
+    <!-- DatePicker with spinner -->
+    <style name="SpinnerDatePickerDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <!-- Force spinner mode -->
+        <item name="android:datePickerMode">spinner</item>
+        <item name="android:calendarViewShown">false</item>
+        <item name="android:spinnersShown">true</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- TimePicker with spinner -->
+    <style name="SpinnerTimePickerDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <!-- Force spinner mode -->
+        <item name="android:timePickerMode">spinner</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="SpinnerDialogTransparent" parent="@android:style/Theme.Holo.Light.Dialog.NoActionBar">
+        <!-- خلي الخلفية شفافة -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item> <!-- يشيل التعتيم ورا الدايالوج -->
+    </style>
+
+
+
 </resources>

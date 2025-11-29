@@ -165,11 +165,11 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="0123456789"
             android:gravity="center"
             android:hint="@string/qty"
             android:imeOptions="actionGo"
             android:inputType="number"
+            android:digits="0123456789."
             android:lines="1"
             android:maxLines="1"
             android:singleLine="true" />

@@ -1,7 +1,6 @@
 package net.gbs.epp_project.Repositories
 
 import android.app.Activity
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
 import net.gbs.epp_project.Base.BaseRepository
@@ -24,10 +23,12 @@ class ReceivingRepository(activity: Activity) :
     suspend fun getPoOrganizations(poHeaderId:String) = apiInterface.getPoOrganizations(userId!!,deviceSerialNo,lang,poHeaderId)
     suspend fun getLocatorList(
         orgId:Int,
-        subInvCode:String
-    ) = apiInterface.getLocatorList(
+        subInvCode:String,
+        itemId:Int
+    ) = apiInterface.getLocatorListByItemId(
         orgId = orgId.toString(),
-        subinv_code = subInvCode
+        subinv_code = subInvCode,
+        itemId = itemId
     )
     suspend fun getPurchaseOrdersList(poNum:String,orgNum: String) = apiInterface.getPurchaseOrdersList(userId!!,deviceSerialNo,lang,poNum,orgNum)
         suspend fun getPurchaseOrderDetailsList(orgId:Int,poHeaderId: String) = apiInterface.getPurchaseOrderDetailsList(userId!!,deviceSerialNo,lang, orgId, poHeaderId)
@@ -62,7 +63,7 @@ class ReceivingRepository(activity: Activity) :
         orgId = orgId,
     )
 
-    suspend fun getItemInfo(itemCode:String) = apiInterface.getItemInfo(
+    suspend fun getItemInfo(itemCode:String) = apiInterface.getItemInfo_receiving(
         userId = userId!!,
         DeviceSerialNo = deviceSerialNo,
         appLang = lang,
@@ -79,7 +80,7 @@ class ReceivingRepository(activity: Activity) :
 
     suspend fun InspectMaterial(poHeaderId: Int,
                               poLineId :Int,
-                              acceptedQty :Int,
+                              acceptedQty :Double,
                               receiptNo: String,
                                 shipToOrganizationId:Int,
                             transactionDate: String) =
@@ -99,33 +100,9 @@ class ReceivingRepository(activity: Activity) :
                 applang = lang
             )
         )
-    suspend fun PutAwayMaterial(poHeaderId: Int,
-                                poLineId :Int,
-                                locator_id :Int?,
-                                subinventory_code: String,
-                                receiptNo: String,
-                                shipToOrganizationId:Int,
-                                acceptedQty: Int,
-                                transactionDate:String,
-                                lotNum:String?,
-                                isRejected:Boolean) =
+    suspend fun PutAwayMaterial(body: PutawayMaterialBody) =
         apiInterface.PutawayMaterial(
-            PutawayMaterialBody(
-                employeeId = EMPLOYEE_ID,
-                userId = userId!!,
-                poHeaderId = poHeaderId,
-                poLineId = poLineId,
-                locatorId = locator_id,
-                subinventoryCode = subinventory_code,
-                receiptno = receiptNo,
-                shipToOrganizationId = shipToOrganizationId,
-                transactionDate = transactionDate,
-                applang = lang,
-                deviceSerialNo = deviceSerialNo,
-                lotNum = lotNum,
-                userID = userId,
-                isRejected = isRejected
-            )
+            body
         )
 
 

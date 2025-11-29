@@ -7,9 +7,9 @@ data class ItemCompare (
     @SerializedName("itemId"            ) var itemId            : Int?     = null,
     @SerializedName("itemCode"          ) var itemCode          : String?  = null,
     @SerializedName("itemDescription"   ) var itemDescription   : String?  = null,
-    @SerializedName("onHandQty"         ) var onHandQty         : Int?     = null,
+    @SerializedName("onHandQty"         ) var onHandQty         : Double?     = null,
     @SerializedName("locatorIdOnHand"   ) var locatorIdOnHand   : Int?     = null,
     @SerializedName("locatorCodeOnHand" ) var locatorCodeOnHand : String?  = null,
     @SerializedName("isScanned"         ) var isScanned         : Boolean? = null,
-    @SerializedName("countingQty"       ) var countingQty       : Int?     = null
+    @SerializedName("countingQty"       ) var countingQty       : Double?     = null
 )

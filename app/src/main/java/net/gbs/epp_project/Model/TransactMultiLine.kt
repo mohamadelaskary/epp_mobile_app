@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 data class TransactMultiLine(
     @SerializedName("line_id"     ) var lineId     : Int?            = null,
     @SerializedName("linE_NUMBER" ) var linENUMBER : Int?            = null,
-    @SerializedName("lots"        ) var lots       : ArrayList<LotQty>? = arrayListOf(),
+    @SerializedName("lots"        ) var lots       : List<LotQty>? = listOf(),
     @Transient var froMSUBINVENTORYCODE       : String? = null,
     @Transient var tOSUBINVENTORYCODE         : String? = null,
     @Transient var froMLOCATORCode            : String? = null,

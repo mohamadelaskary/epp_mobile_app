@@ -200,9 +200,9 @@ class ZebraScanner(private var activity: Activity,  private var onDataScanned: O
            )
 
            // Configure intent output for captured data to be sent to this app
-               val intentConfig = Bundle()
-                   intentConfig.putString("PLUGIN_NAME", "INTENT")
-                   intentConfig.putString("RESET_CONFIG", "true")
+           val intentConfig = Bundle()
+               intentConfig.putString("PLUGIN_NAME", "INTENT")
+               intentConfig.putString("RESET_CONFIG", "true")
            val intentProps = Bundle()
                intentProps.putString("intent_output_enabled", "true")
                intentProps.putString("intent_action", "com.zebra.datacapture1.ACTION")

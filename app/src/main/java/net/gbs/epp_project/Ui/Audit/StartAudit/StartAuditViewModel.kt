@@ -102,7 +102,7 @@ class StartAuditViewModel(private val application: Application,val activity: Act
     val getSavingDataLiveData = SingleLiveEvent<List<AuditOrder>>()
     val getSavingDataStatus = SingleLiveEvent<StatusWithMessage>()
     fun saveData(
-        qty: Int,
+        qty: Double,
         itemCode: String,
         locatorCode: String,
         headerId: Int,

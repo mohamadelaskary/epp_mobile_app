@@ -133,7 +133,7 @@ class StartTransferViewModel(private val application: Application,activity: Acti
         job = CoroutineScope(Dispatchers.IO).launch {
             getLotListStatus.postValue(StatusWithMessage(Status.LOADING))
             try {
-                val response = repository.getLotList(orgId.toString(),itemId,subInvCode)
+                val response = repository.getLotList(orgId.toString(),itemId,subInvCode,null)
                 ResponseDataHandler(response,getLotListLiveData,getLotListStatus,application).handleData("LotList")
                 if (response.body()?.responseStatus?.errorMessage!=null)
                     repository.MobileLog(

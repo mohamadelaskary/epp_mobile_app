@@ -1,6 +1,7 @@
 package net.gbs.epp_project.Repositories
 
 import android.app.Activity
+import android.content.Context
 import net.gbs.epp_project.Base.BaseRepository
 import net.gbs.epp_project.Model.ApiRequestBody.AllocateItemsBody
 import net.gbs.epp_project.Model.ApiRequestBody.TransactItemsBody
@@ -10,7 +11,7 @@ import net.gbs.epp_project.Model.Response.NoDataResponse
 import net.gbs.epp_project.Ui.SplashAndSignIn.SignInFragment
 import retrofit2.Response
 
-class IssueRepository(activity: Activity) : BaseRepository(activity = activity) {
+class IssueRepository(context: Context) : BaseRepository(context) {
     suspend fun getOrganizations() = apiInterface.getOrganizationsList(userId!!,deviceSerialNo,lang)
     suspend fun getLocatorList(
         orgId:Int,
@@ -18,6 +19,15 @@ class IssueRepository(activity: Activity) : BaseRepository(activity = activity) 
     ) = apiInterface.getLocatorList(
         orgId = orgId.toString(),
         subinv_code = subInvCode
+    )
+    suspend fun getLocatorListByItemId(
+        orgId:Int,
+        subInvCode:String,
+        itemId:Int
+    ) = apiInterface.getLocatorListByItemId(
+        orgId = orgId.toString(),
+        subinv_code = subInvCode,
+        itemId = itemId
     )
     suspend fun getMoveOrderByHeaderId(
         headerId:Int?,
@@ -98,6 +108,8 @@ class IssueRepository(activity: Activity) : BaseRepository(activity = activity) 
         orgId = orgId
     )
 
+
+
     suspend fun allocateItems(
         body:AllocateItemsBody
     ):Response<NoDataResponse> {
@@ -158,12 +170,41 @@ class IssueRepository(activity: Activity) : BaseRepository(activity = activity) 
             itemCode = itemCode,
             orgId = orgId
         )
+    suspend fun getOnHandLocatorDetails(itemCode:String,locatorCode:String,orgId: Int) =
+        apiInterface.getOnHandLocatorDetails(
+            userId = userId!!,
+            deviceSerialNo = deviceSerialNo,
+            appLang = lang,
+            itemCode = itemCode,
+            orgId = orgId,
+            locatorCode = locatorCode
+        )
     suspend fun getItemInfo(itemCode:String,orgId: Int) =
         apiInterface.getOnHangItemInfo(
             userId = userId!!,
             DeviceSerialNo = deviceSerialNo,
             appLang = lang,
             itemCode = itemCode,
+            orgId = orgId
+        )
+    suspend fun getItemInfo(itemCode:String,subInvCode: String,orgId: Int) =
+        apiInterface.getItemInfo_issue(
+            userId = userId!!,
+            DeviceSerialNo = deviceSerialNo,
+            appLang = lang,
+            itemCode = itemCode,
+            subInvCode = subInvCode,
+            locatorCode = null,
+            orgId = orgId
+        )
+
+    suspend fun getOnHandQtyGroupedBySubInv(itemCode:String,subInvCode: String,orgId: Int) =
+        apiInterface.getOnHandForAllocate_GroupedBySubInv(
+            userId = userId!!,
+            DeviceSerialNo = deviceSerialNo,
+            appLang = lang,
+            itemCode = itemCode,
+            subInvCode = subInvCode,
             orgId = orgId
         )
 }

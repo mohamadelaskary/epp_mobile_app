@@ -9,12 +9,22 @@
     tools:context=".Ui.Menus.MainMenuFragment">
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/gate_module"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/gate"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/receiving"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/receiving"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/receiving"
         app:layout_constraintBottom_toTopOf="@+id/issue"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gate_module"
         tools:layout_editor_absoluteX="0dp" />
 
     <com.google.android.material.button.MaterialButton

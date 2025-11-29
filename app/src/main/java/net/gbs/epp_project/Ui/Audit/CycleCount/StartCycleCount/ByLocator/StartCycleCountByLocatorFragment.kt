@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 
 import net.gbs.epp_project.Base.BaseFragmentWithViewModel
 import net.gbs.epp_project.Model.CycleCountHeader
@@ -147,7 +148,7 @@ class StartCycleCountByLocatorFragment
                         itemCode = getEditTextText(binding.itemCode),
                         locatorCode = locator.locatorCode!!,
                         cycleCountHeaderId = cycleCountHeader.id!!,
-                        qty = qtyText.toInt(),
+                        qty = qtyText.toDouble(),
                         orgCode = organizationCode
                     )
                 }
@@ -156,7 +157,7 @@ class StartCycleCountByLocatorFragment
                 val bundle = Bundle()
                 bundle.putString(NavigationKeys.ORGANIZATION_CODE_KEY, organizationCode)
                 bundle.putInt(NavigationKeys.CYCLE_COUNT_HEADER_KEY, cycleCountHeader.id!!)
-                navController.navigate(R.id.action_startCycleCountByLocatorFragment_to_onHandFragment,bundle)
+                findNavController().navigate(R.id.action_startCycleCountByLocatorFragment_to_onHandFragment,bundle)
             }
 
             R.id.finish_count -> viewModel.finishCycleCount(headerId = cycleCountHeader.id!!)
@@ -184,10 +185,10 @@ class StartCycleCountByLocatorFragment
             binding.qty.error = getString(R.string.please_enter_qty)
             isReady = false
         }
-        if (!containsOnlyDigits(qtyText)){
-            binding.qty.error = getString(R.string.please_enter_valid_qty)
-            isReady = false
-        }
+//        if (!containsOnlyDigits(qtyText)){
+//            binding.qty.error = getString(R.string.please_enter_valid_qty)
+//            isReady = false
+//        }
         return isReady
     }
 

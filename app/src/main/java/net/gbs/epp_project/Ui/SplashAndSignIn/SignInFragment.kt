@@ -1,7 +1,7 @@
 package net.gbs.epp_project.Ui.SplashAndSignIn
 
-import android.content.ContentValues
 import android.content.ContentValues.TAG
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -44,7 +45,7 @@ class SignInFragment : BaseFragmentWithViewModel<SignInViewModel, FragmentSignIn
 
     companion object {
         val EMPLOYEE_ID = 1210
-        var USER: User? = null
+        var USER: User? = User()
         val PROGRAM_ID = 327660
         val PROGRAM_APPLICATION_ID = 201
         var manualEnter = true
@@ -93,11 +94,12 @@ class SignInFragment : BaseFragmentWithViewModel<SignInViewModel, FragmentSignIn
             val userName = getEditTextText(binding.userName)
             val password = getEditTextText(binding.password)
             if (readyToSignIn(userName,password)){
+//                navController.navigate(R.id.action_signInFragment_to_mainMenuFragment)
                 viewModel.signIn(userName,password)
             }
         }
         binding.changePassword.setOnClickListener {
-            navController.navigate(R.id.action_signInFragment_to_changePasswordFragment)
+            findNavController().navigate(R.id.action_signInFragment_to_changePasswordFragment)
         }
         binding.settings.setOnClickListener {
             changeSettingsDialog.show()
@@ -132,16 +134,35 @@ class SignInFragment : BaseFragmentWithViewModel<SignInViewModel, FragmentSignIn
             USER = it
             MainActivity.startSession()
             try {
+                Log.d(TAG, "observeSignIn: ServerTime ${it.serverDateTime!!.replace("T", " ").substring(0, 16)+":00"}")
+                Log.d(TAG, "observeSignIn: MobileTime ${viewModel.getDeviceTodayDate()}")
                 if (FormatDateTime.compareTwoTimes(
-                        it.serverDateTime!!.replace("T", " ").substring(0, 19),
+                        it.serverDateTime!!.replace("T", " ").substring(0, 16)+":00",
                         viewModel.getDeviceTodayDate()
                     )
                 ) {
-                    navController.navigate(R.id.action_signInFragment_to_mainMenuFragment)
-                    showSuccessAlerter(
-                        getString(R.string.you_logged_in_successfully),
-                        requireActivity()
-                    )
+                    try {
+                        if (getCurrentApkVersion(
+                                context?.packageManager!!,
+                                context?.packageName!!
+                            ) == USER?.apkVersion
+                        ) {
+                            findNavController().navigate(R.id.action_signInFragment_to_mainMenuFragment)
+                            showSuccessAlerter(
+                                getString(R.string.you_logged_in_successfully),
+                                requireActivity()
+                            )
+                        } else {
+                            findNavController().navigate(R.id.action_signInFragment_to_updateApkFragment)
+                            showSuccessAlerter(
+                                getString(R.string.update_mobile_application_to_new_version),
+                                requireActivity()
+                            )
+                        }
+                    } catch (ex: Exception){
+                        warningDialog(requireContext(),ex.message.toString())
+
+                    }
                 } else {
                     warningDialog(
                         requireContext(),
@@ -246,5 +267,23 @@ class SignInFragment : BaseFragmentWithViewModel<SignInViewModel, FragmentSignIn
                 }
             }
         }
+    }
+
+    fun getCurrentApkVersion(packageManager: PackageManager,packageName:String):String{
+        var versionCode: String = "0"
+        try {
+            val packageInfo = packageManager.getPackageInfo(packageName, 0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                versionCode = packageInfo.versionCode.toString()
+            } else {
+                @Suppress("DEPRECATION")
+                versionCode = packageInfo.versionCode.toString()
+            }
+
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+            // Handle the exception
+        }
+        return versionCode
     }
 }

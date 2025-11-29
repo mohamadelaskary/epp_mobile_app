@@ -79,11 +79,11 @@ class ReturnToWarehouseViewModel(private val application: Application, val activ
 
     val getLocatorsListLiveData = SingleLiveEvent<List<Locator>>()
     val getLocatorsListStatus   = SingleLiveEvent<StatusWithMessage>()
-    fun getLocatorsList(orgId:Int,subInvCode:String){
+    fun getLocatorsList(orgId:Int,subInvCode:String,itemId:Int){
         job = CoroutineScope(Dispatchers.IO).launch {
             getLocatorsListStatus.postValue(StatusWithMessage(Status.LOADING))
             try {
-                val response = returnRepository.getLocatorList(orgId,subInvCode)
+                val response = returnRepository.getLocatorList(orgId,subInvCode, itemId)
                 ResponseDataHandler(response,getLocatorsListLiveData,getLocatorsListStatus,application).handleData("LocatorList")
                 if (response.body()?.responseStatus?.errorMessage!=null)
                     returnRepository.MobileLog(
@@ -185,7 +185,7 @@ class ReturnToWarehouseViewModel(private val application: Application, val activ
         getLotListStatus.postValue(StatusWithMessage(Status.LOADING))
         job = CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = returnRepository.getLotList(orgId.toString(),itemId,subInvCode)
+                val response = returnRepository.getLotList(orgId.toString(),itemId,subInvCode,null)
                 ResponseDataHandler(response,getLotListLiveData,getLotListStatus,application).handleData("LotList")
                 Log.d(ContentValues.TAG, "observeGettingLotList: ${response.body()?.getList?.size}")
                 if (response.body()?.responseStatus?.errorMessage!=null)

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import net.gbs.epp_project.Base.BaseFragmentWithViewModel
 import net.gbs.epp_project.Model.AuditOrder
 import net.gbs.epp_project.Model.NavigationKeys.AUDIT_ORDER_KEY
@@ -76,6 +77,6 @@ class AuditListFragment : BaseFragmentWithViewModel<AuditListViewModel,FragmentA
     override fun OnOrderItemClicked(position: Int) {
         val bundle = Bundle()
         bundle.putString(AUDIT_ORDER_KEY,AuditOrder.toJson(auditOrdersList[position]))
-        navController.navigate(R.id.action_auditListFragment_to_startAuditFragment,bundle)
+        findNavController().navigate(R.id.action_auditListFragment_to_startAuditFragment,bundle)
     }
 }

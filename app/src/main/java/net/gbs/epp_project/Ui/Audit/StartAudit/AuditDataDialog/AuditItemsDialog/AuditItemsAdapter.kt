@@ -35,7 +35,7 @@ class AuditItemsAdapter(private val context:Context):Adapter<AuditItemsAdapter.A
         with(holder.binding) {
             itemCode.text = locatorsList[position].itemCode
 
-            if (item.countingQty!=null&&item.countingQty!=0){
+            if (item.countingQty!=null&&item.countingQty!=0.0){
                 itemCode.setTextColor(context.getColor(R.color.green))
                 countedQty.setTextColor(context.getColor(R.color.green))
                 countedQty.text = locatorsList[position].countingQty.toString()

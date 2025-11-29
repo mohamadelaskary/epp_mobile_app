@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/gate_nav_graph"
+    app:startDestination="@id/gateMenuFragment2">
+
+    <fragment
+        android:id="@+id/checkInTruckListFragment"
+        android:name="net.gbs.epp_project.Ui.Gate.CheckIn.TrucksList.CheckInTruckListFragment"
+        android:label="CheckInTruckListFragment" >
+        <action
+            android:id="@+id/action_checkInTruckListFragment_to_checkInFragment"
+            app:destination="@id/checkInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gateMenuFragment2"
+        android:name="net.gbs.epp_project.Ui.Menus.GateMenuFragment"
+        android:label="fragment_gate_menu"
+        tools:layout="@layout/fragment_gate_menu" >
+        <action
+            android:id="@+id/action_gateMenuFragment2_to_confirmArrivalTruckListFragment"
+            app:destination="@id/confirmArrivalTruckListFragment" />
+        <action
+            android:id="@+id/action_gateMenuFragment2_to_checkInTruckListFragment"
+            app:destination="@id/checkInTruckListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkInFragment"
+        android:name="net.gbs.epp_project.Ui.Gate.CheckIn.CheckIn.CheckInFragment"
+        android:label="CheckInFragment" />
+    <fragment
+        android:id="@+id/confirmArrivalTruckListFragment"
+        android:name="net.gbs.epp_project.Ui.Gate.ConfirmArrival.TrucksList.ConfirmArrivalTruckListFragment"
+        android:label="fragment_truck_list"
+        tools:layout="@layout/fragment_truck_list" >
+        <action
+            android:id="@+id/action_confirmArrivalTruckListFragment_to_confirmArrivalFragment"
+            app:destination="@id/confirmArrivalFragment" />
+    </fragment>
+    <fragment
+    android:id="@+id/confirmArrivalFragment"
+    android:name="net.gbs.epp_project.Ui.Gate.ConfirmArrival.ConfirmArrival.ConfirmArrivalFragment"
+    android:label="fragment_confirm_arrival"
+    tools:layout="@layout/fragment_confirm_arrival" />
+</navigation>

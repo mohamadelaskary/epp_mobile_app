@@ -5,7 +5,7 @@ data class PhysicalInventory_CountBody(
     val ItemCode: String,
     val LocatorCode: String,
     val PhysicalInventoryHeaderId: Int,
-    val Qty: Int,
+    val Qty: Double,
     val SubInventoryCode: String,
     var UserID: String?=null,
     var applang: String?=null,

@@ -7,8 +7,9 @@ object BundleKeys {
     const val PO_DETAILS_ITEM_2_Key = "po_details_item_2_key"
     const val ORGANIZATION_ID_KEY = "selected_organization_id"
     const val ORGANIZATION_CODE_KEY = "selected_organization_code"
-
+    const val QUANTITY_KEY = "quantity_key"
     const val MOVE_ORDER_LINE_KEY = "move_order_line_key"
+    const val SUB_INVENTORY_FROM_CODE = "sub_inv_from_key"
     const val MOVE_ORDER_NUMBER_KEY = "move_order_number_key"
     const val SOURCE_KEY = "source_key"
     const val FACTORY = "Factory"
@@ -24,7 +25,7 @@ object BundleKeys {
     const val PUT_AWAY_REJECT = "put_away_reject"
     const val PO_LINE_KEY = "po_line_key"
     const val PO_ITEMS_LIST_KEY = "po_items_list_key"
-
+    const val LOCATOR_FROM_CODE_KEY = "locator_from_code_key"
     const val ADD_LOT_QTY_S_T_LINE = "add_lot_qty_s_to_line"
 
     const val FACTORY_ORGANIZATION_ID = 84

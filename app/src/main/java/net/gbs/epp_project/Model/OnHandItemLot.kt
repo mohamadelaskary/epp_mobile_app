@@ -16,7 +16,7 @@ data class OnHandItemLot (
     @SerializedName("inventorY_LOCATOR_ID" ) var inventoryLocatorId : Int?    = null,
     @SerializedName("locator"              ) var locator            : String? = null,
     @SerializedName("lot_Num"              ) var lotNum             : String? = null,
-    @SerializedName("onhand"               ) var onhand             : Int?    = null,
+    @SerializedName("onhand"               ) var onhand             : Double?    = null,
     @SerializedName("uom"                  ) var uom                : String? = null,
-    @SerializedName("availblE_QTY"         ) var availbleQty        : Int?    = null
+    @SerializedName("availblE_QTY"         ) var availbleQty        : Double?    = null
 )

@@ -15,7 +15,8 @@ data class AuditOrderSubinventory(
     @SerializedName("itemCode"         ) var itemCode         : String? = null,
     @SerializedName("itemDescription"  ) var itemDescription  : String? = null,
     @SerializedName("uom"              ) var uom              : String? = null,
-    @SerializedName("countingQty"      ) var countingQty      : Int? = null
+    @SerializedName("countingQty"      ) var countingQty      : Double? = null,
+    @SerializedName("onHandQty"      ) var onHandQty      : Double? = null,
 ) {
     override fun toString(): String {
         return subInventoryDesc.toString()

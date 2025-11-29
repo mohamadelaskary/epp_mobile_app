@@ -1,5 +1,6 @@
 package net.gbs.epp_project.Model
 
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
 data class Locator(
@@ -11,5 +12,14 @@ data class Locator(
 ) {
     override fun toString(): String {
         return locatorCode!!
+    }
+
+    companion object{
+        fun toJson(locator: Locator):String{
+            return Gson().toJson(locator)
+        }
+        fun fromJson(locator: String):Locator{
+            return Gson().fromJson(locator, Locator::class.java)
+        }
     }
 }

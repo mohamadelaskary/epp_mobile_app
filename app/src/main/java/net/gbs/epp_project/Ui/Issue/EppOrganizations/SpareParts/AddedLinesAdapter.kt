@@ -33,8 +33,7 @@ class AddedLinesAdapter(val lines:List<TransactMultiLine>, val onLineItemDeleteB
         val line = lines[position]
         with(holder.binding){
             itemCode.text = line.inventorYITEMCODE
-            subInventoryFrom.text = line.inventorYITEMCODE
-            subInventoryTo.text = line.tOSUBINVENTORYCODE
+            subInventoryFrom.text = line.froMSUBINVENTORYCODE
             locatorFrom.text = line.froMLOCATORCode
             qty.text = line.quantity.toString()
             removeItem.setOnClickListener {
@@ -53,7 +52,7 @@ class AddedLinesAdapter(val lines:List<TransactMultiLine>, val onLineItemDeleteB
         fun onLineItemDeleteButtonClicked(lineId: Int?,position: Int)
     }
 
-    private fun qtysToString(lots: ArrayList<LotQty>?): String {
+    private fun qtysToString(lots: List<LotQty>?): String {
         var lotsText = ""
         lots?.forEachIndexed { index, lotQty ->
             if (index==0)

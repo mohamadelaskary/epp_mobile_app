@@ -1,6 +1,7 @@
 package net.gbs.epp_project.Repositories
 
 import android.app.Activity
+import android.content.Context
 import net.gbs.epp_project.Base.BaseRepository
 import net.gbs.epp_project.Model.ApiRequestBody.PhysicalInventory_CountBody
 import net.gbs.epp_project.Model.ApiResponse.PhysicalInventory_CountResponse
@@ -8,7 +9,7 @@ import net.gbs.epp_project.Model.Response.NoDataResponse
 import net.gbs.epp_project.Ui.SplashAndSignIn.SignInFragment.Companion.USER
 import retrofit2.Response
 
-class AuditRepository(activity:Activity) : BaseRepository(activity = activity) {
+class AuditRepository(context: Context) : BaseRepository(context) {
     val notOracleUserId = USER?.notOracleUserId!!
     suspend fun getAuditOrdersList() = apiInterface.getOrdersList(notOracleUserId,deviceSerialNo,lang)
     suspend fun getLocatorData(locatorCode:String) = apiInterface.getLocatorData(deviceSerialNo,lang, locatorCode)
@@ -25,7 +26,7 @@ class AuditRepository(activity:Activity) : BaseRepository(activity = activity) {
     suspend fun getTransactionsList(headerId:Int) = apiInterface.GetPhysicalInventoryOrderCounting_Transactions(notOracleUserId,deviceSerialNo,lang,headerId)
     suspend fun createNewCycleCountOrderByLocator(locatorId:Int,organizationCode:String) = apiInterface.createNewCycleCountOrderByLocator(notOracleUserId,deviceSerialNo,lang, locatorId,organizationCode )
     suspend fun createNewCycleCountOrderByItem(itemCode:String,organizationCode:String) = apiInterface.createNewCycleCountOrderByItem(notOracleUserId,deviceSerialNo,lang, itemCode, organizationCode )
-    suspend fun saveCycleCountOrderDetails(itemCode:String,locatorCode: String,cycleCountHeaderId:Int,qty:Int,orgCode:String)
+    suspend fun saveCycleCountOrderDetails(itemCode:String,locatorCode: String,cycleCountHeaderId:Int,qty:Double,orgCode:String)
     = apiInterface.saveCycleCountOrderDetails(
         userId = notOracleUserId,
         deviceSerialNo = deviceSerialNo,

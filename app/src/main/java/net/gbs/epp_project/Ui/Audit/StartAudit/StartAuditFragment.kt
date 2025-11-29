@@ -13,6 +13,7 @@ import android.view.View.OnClickListener
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.navigation.fragment.findNavController
 
 import net.gbs.epp_project.Base.BaseFragmentWithViewModel
 import net.gbs.epp_project.Model.AuditLocator
@@ -155,7 +156,7 @@ class StartAuditFragment :
                 val qty = getEditTextText(binding.scannedQty)
                 if (isReadyToSave(qty)) {
                     viewModel.saveData(
-                        qty = qty.toInt(),
+                        qty = qty.toDouble(),
                         headerId = auditOrder.physicalInventoryHeaderId!!,
                         itemCode = selectedSubInventory?.itemCode!!,
                         locatorCode = selectedSubInventory?.locatorCode!!,
@@ -309,7 +310,7 @@ class StartAuditFragment :
     private fun save() {
         if (isReadyToSave("1")) {
             viewModel.saveData(
-                qty = 1,
+                qty = 1.0,
                 headerId = auditOrder.physicalInventoryHeaderId!!,
                 itemCode = selectedSubInventory?.itemCode!!,
                 locatorCode = selectedSubInventory?.locatorCode!!,
@@ -348,7 +349,7 @@ class StartAuditFragment :
                 val qty = getEditTextText(binding.scannedQty)
                 if (isReadyToSave(qty)) {
                     viewModel.saveData(
-                        qty = qty.toInt(),
+                        qty = qty.toDouble(),
                         headerId = auditOrder.physicalInventoryHeaderId!!,
                         itemCode = selectedSubInventory?.itemCode!!,
                         locatorCode = selectedSubInventory?.locatorCode!!,
@@ -360,7 +361,7 @@ class StartAuditFragment :
             R.id.audit_list -> {
                     val bundle = Bundle()
                     bundle.putString(AUDIT_ORDER_KEY, AuditOrder.toJson(auditOrder))
-                    navController.navigate(
+                findNavController().navigate(
                         R.id.action_startAuditFragment_to_auditedListFragment,
                         bundle
                     )
@@ -424,10 +425,10 @@ class StartAuditFragment :
             isReady = false
             binding.scannedQty.error = getString(R.string.please_enter_qty)
         } else {
-            if (!containsOnlyDigits(qty)){
-                isReady = false
-                binding.scannedQty.error = getString(R.string.please_enter_valid_qty)
-            }
+//            if (!containsOnlyDigits(qty)){
+//                isReady = false
+//                binding.scannedQty.error = getString(R.string.please_enter_valid_qty)
+//            }
         }
         return isReady
     }

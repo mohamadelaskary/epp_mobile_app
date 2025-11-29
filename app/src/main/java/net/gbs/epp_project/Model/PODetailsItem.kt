@@ -15,13 +15,13 @@ data class PODetailsItem(
     @SerializedName("itemcategory"            ) var itemcategory         : String? = null,
     @SerializedName("itemdesc"                ) var itemdesc             : String? = null,
     @SerializedName("itemuom"                 ) var itemuom              : String? = null,
-    @SerializedName("itemqty"                 ) var itemQty              : Int?    = null,
-    @SerializedName("itemqtyreceived"         ) var itemQtyReceived      : Int?    = null,
-    @SerializedName("itemqtyaccepted"         ) var itemqtyaccepted      : Int?    = null,
-    @SerializedName("itemqtyrejected"         ) var itemqtyrejected      : Int?    = null,
-    @SerializedName("itemqtybilled"           ) var itemqtybilled        : Int?    = null,
-    @SerializedName("itemqtycancelled"        ) var itemqtycancelled     : Int?    = null,
-    @SerializedName("itemprice"               ) var itemprice            : Int?    = null,
+    @SerializedName("itemqty"                 ) var itemQty              : Double?    = null,
+    @SerializedName("itemqtyreceived"         ) var itemQtyReceived      : Double?    = null,
+    @SerializedName("itemqtyaccepted"         ) var itemqtyaccepted      : Double?    = null,
+    @SerializedName("itemqtyrejected"         ) var itemqtyrejected      : Double?    = null,
+    @SerializedName("itemqtybilled"           ) var itemqtybilled        : Double?    = null,
+    @SerializedName("itemqtycancelled"        ) var itemqtycancelled     : Double?    = null,
+    @SerializedName("itemprice"               ) var itemprice            : Double?    = null,
     @SerializedName("need_by_date"            ) var needByDate           : String? = null,
     @SerializedName("loT_CONTROL_CODE"        ) var lotControlCode       : String? = null,
     @SerializedName("loT_CONTROL_NAME"        ) var lotControlName       : String? = null,
@@ -31,8 +31,8 @@ data class PODetailsItem(
     private val re = Regex("[^A-Za-z0-9 ]")
     val itemDescription
         get() = re.replace(itemdesc as String,"")
-    var currentReceivedQty = 0
-    val remainingQty:Int
+    var currentReceivedQty = 0.0
+    val remainingQty:Double
         get() = itemQty!! - itemQtyReceived!!
     var isAdded = false
 }
