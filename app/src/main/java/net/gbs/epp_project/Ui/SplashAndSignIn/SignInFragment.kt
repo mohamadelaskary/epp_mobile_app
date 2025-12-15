@@ -88,7 +88,8 @@ class SignInFragment : BaseFragmentWithViewModel<SignInViewModel, FragmentSignIn
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val apkVersionText = "Mobile app current version ${getCurrentApkVersion(context?.packageManager!!,context?.packageName!!)}"
+        binding.apkVersion.text = apkVersionText
         observeSignIn()
         binding.signIn.setOnClickListener {
             val userName = getEditTextText(binding.userName)
@@ -208,6 +209,7 @@ class SignInFragment : BaseFragmentWithViewModel<SignInViewModel, FragmentSignIn
         hideLogOutButton(requireActivity())
 //        changeTitle(getString(R.string.sign_in),activity as MainActivity)
         changeFragmentTitle(getString(R.string.sign_in),requireActivity())
+
     }
 
     override fun OnSaveButtonClicked(protocol: String, ipAddress: String, portNum: String) {

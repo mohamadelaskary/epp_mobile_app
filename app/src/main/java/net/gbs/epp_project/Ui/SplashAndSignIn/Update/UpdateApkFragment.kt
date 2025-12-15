@@ -9,8 +9,10 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import net.gbs.epp_project.Base.BaseFragmentWithViewModel
+import net.gbs.epp_project.MainActivity.MainActivity
 import net.gbs.epp_project.R
 import net.gbs.epp_project.Tools.ApkInstaller
+import net.gbs.epp_project.Tools.Tools.changeTitle
 import net.gbs.epp_project.Ui.SplashAndSignIn.SignInFragment.Companion.USER
 import net.gbs.epp_project.databinding.FragmentUpdateApkBinding
 
@@ -61,5 +63,10 @@ class UpdateApkFragment : BaseFragmentWithViewModel<UpdateApkViewModel, Fragment
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        changeTitle(getString(R.string.update),requireActivity() as MainActivity)
     }
 }

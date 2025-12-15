@@ -69,7 +69,12 @@
                 android:layout_width="230dp"
                 android:layout_height="200dp"
                 android:src="@drawable/epp_gbs_logo" />
-
+            <TextView
+                android:id="@+id/apk_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="mobile app version 3"
+                android:gravity="center"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/user_name"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

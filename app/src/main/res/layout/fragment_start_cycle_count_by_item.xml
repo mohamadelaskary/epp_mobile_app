@@ -32,9 +32,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:digits="0123456789.-"
             android:gravity="center"
-            android:inputType="numberSigned"
+            android:inputType="numberDecimal|numberSigned"
             android:lines="1"
             android:maxLines="1"
             android:singleLine="true" />

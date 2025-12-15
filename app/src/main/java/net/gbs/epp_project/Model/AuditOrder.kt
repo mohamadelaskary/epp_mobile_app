@@ -30,19 +30,19 @@ data class AuditOrder(
         return editedSubInventories
     }
 
-    fun getLocatorsForInSubInventory(subInvCode:String):AuditLocator{
+    fun getLocatorsForInSubInventory(subInvCode:String):List<AuditOrderSubinventory>{
         val locators = mutableListOf<AuditOrderSubinventory>()
-        var isFullyScanned = true
         subInventories.forEach {locator->
             if (locator.subInventoryCode == subInvCode){
                 val alreadyAddedLocator = locators.find { it.locatorCode== locator.locatorCode}
                 if (alreadyAddedLocator==null){
+                    val notScanned = subInventories.filter { it.locatorCode == locator.locatorCode && it.countingQty==0.0 }
+                    locator.isFullyScannedLocator = notScanned.isEmpty()
                     locators.add(locator)
-                    if (locator.countingQty==0.0||locator.countingQty==null) isFullyScanned = false
                 }
             }
         }
-        return AuditLocator(locators,isFullyScanned)
+        return locators
     }
 
     fun getItemsForLocatorCodeAndSubInventory(subInvCode:String,locatorCode:String):List<AuditOrderSubinventory>{
