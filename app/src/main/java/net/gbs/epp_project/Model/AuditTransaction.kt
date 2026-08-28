@@ -20,9 +20,10 @@ data class AuditTransaction (
     @SerializedName("itemDescription"             ) var itemDescription             : String? = null,
     @SerializedName("category"                    ) var category                    : String? = null,
     @SerializedName("subCategory"                 ) var subCategory                 : String? = null,
-    @SerializedName("qty"                         ) var qty                         : Int?    = null,
+    @SerializedName("qty"                         ) var qty                         : Double?    = null,
     @SerializedName("uom"                         ) var uom                         : String? = null,
+    @SerializedName("onHandQty"                   ) var onHandQty                   : Double?    = null,
     @SerializedName("userIdCount"                 ) var userIdCount                 : String? = null,
     @SerializedName("dateCount"                   ) var dateCount                   : String? = null,
     @SerializedName("userName_Count"              ) var userNameCount               : String? = null
-        )
+)

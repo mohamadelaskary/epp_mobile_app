@@ -74,10 +74,10 @@ class ResponseDataHandler<T : BaseResponse<D>, D>(
             } else {
                 statusWithMessage.postValue(
                     StatusWithMessage(
-                        Status.NETWORK_FAIL,
-                        application.getString(
-                            R.string.error_in_getting_data
-                        )
+                        Status.NETWORK_FAIL, response.message()
+//                        application.getString(
+//                            R.string.error_in_getting_data
+//                        )
                     )
                 )
 

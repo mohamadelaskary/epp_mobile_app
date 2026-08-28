@@ -9,17 +9,18 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import net.gbs.epp_project.Model.AuditLocator
-import net.gbs.epp_project.Model.AuditOrderSubinventory
+import net.gbs.epp_project.Model.AuditOrderItemWithLocation
 import net.gbs.epp_project.R
+import net.gbs.epp_project.Ui.Audit.StartAudit.LocatorAudit
 import net.gbs.epp_project.databinding.AuditLocatorItemBinding
 
 class AuditLocatorsAdapter(private val context: Context)
     : RecyclerView.Adapter<AuditLocatorsAdapter.AuditLocatorsViewHolder>(), Filterable {
 
-    private var originalList: List<AuditOrderSubinventory> = listOf()
-    private var filteredList: MutableList<AuditOrderSubinventory> = mutableListOf()
+    private var originalList: List<LocatorAudit> = listOf()
+    private var filteredList: MutableList<LocatorAudit> = mutableListOf()
 
-    var auditOrderList: List<AuditOrderSubinventory> = listOf()
+    var auditOrderList: List<LocatorAudit> = listOf()
         set(value) {
             field = value
 
@@ -49,7 +50,7 @@ class AuditLocatorsAdapter(private val context: Context)
 
         holder.binding.locatorCode.text = item.locatorCode
 
-        if (item.isFullyScannedLocator) {
+        if (item.isFullyAudited) {
             holder.binding.locatorCode.setTextColor(context.getColor(R.color.green))
         } else {
             holder.binding.locatorCode.setTextColor(context.getColor(R.color.black))
@@ -80,7 +81,7 @@ class AuditLocatorsAdapter(private val context: Context)
 
             override fun publishResults(query: CharSequence?, results: FilterResults?) {
                 filteredList =
-                    (results?.values as? List<AuditOrderSubinventory>)?.toMutableList()
+                    (results?.values as? List<LocatorAudit>)?.toMutableList()
                         ?: mutableListOf()
 
                 notifyDataSetChanged()

@@ -14,15 +14,15 @@ data class AuditOrder(
     @SerializedName("isClosed"                  ) var isClosed                  : Boolean?                  = null,
     @SerializedName("userIdClosed"              ) var userIdClosed              : String?                   = null,
     @SerializedName("dateClosed"                ) var dateClosed                : String?                   = null,
-    @SerializedName("subInventories"            ) var subInventories            : ArrayList<AuditOrderSubinventory> = arrayListOf()
+    @SerializedName("subInventories"            ) var itemsWithLocation            : ArrayList<AuditOrderItemWithLocation> = arrayListOf()
 
 ){
 
 
 
-    fun editedSubInventoriesList():List<AuditOrderSubinventory>{
-        val editedSubInventories = mutableListOf<AuditOrderSubinventory>()
-        subInventories.forEach { subInv ->
+    fun editedSubInventoriesList():List<AuditOrderItemWithLocation>{
+        val editedSubInventories = mutableListOf<AuditOrderItemWithLocation>()
+        itemsWithLocation.forEach { subInv ->
             val alreadyAddedSubInv = editedSubInventories.find { it.subInventoryId == subInv.subInventoryId }
             if (alreadyAddedSubInv == null)
                 editedSubInventories.add(subInv)
@@ -30,13 +30,13 @@ data class AuditOrder(
         return editedSubInventories
     }
 
-    fun getLocatorsForInSubInventory(subInvCode:String):List<AuditOrderSubinventory>{
-        val locators = mutableListOf<AuditOrderSubinventory>()
-        subInventories.forEach {locator->
+    fun getLocatorsForInSubInventory(subInvCode:String):List<AuditOrderItemWithLocation>{
+        val locators = mutableListOf<AuditOrderItemWithLocation>()
+        itemsWithLocation.forEach {locator->
             if (locator.subInventoryCode == subInvCode){
                 val alreadyAddedLocator = locators.find { it.locatorCode== locator.locatorCode}
                 if (alreadyAddedLocator==null){
-                    val notScanned = subInventories.filter { it.locatorCode == locator.locatorCode && it.countingQty==0.0 }
+                    val notScanned = itemsWithLocation.filter { it.locatorCode == locator.locatorCode && it.countingQty==0.0 }
                     locator.isFullyScannedLocator = notScanned.isEmpty()
                     locators.add(locator)
                 }
@@ -45,9 +45,9 @@ data class AuditOrder(
         return locators
     }
 
-    fun getItemsForLocatorCodeAndSubInventory(subInvCode:String,locatorCode:String):List<AuditOrderSubinventory>{
-        val items = mutableListOf<AuditOrderSubinventory>()
-        subInventories.forEach {
+    fun getItemsForLocatorCodeAndSubInventory(subInvCode:String,locatorCode:String):List<AuditOrderItemWithLocation>{
+        val items = mutableListOf<AuditOrderItemWithLocation>()
+        itemsWithLocation.forEach {
             if (it.subInventoryCode==subInvCode&&it.locatorCode==locatorCode){
                 items.add(it)
             }

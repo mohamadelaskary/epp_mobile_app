@@ -44,14 +44,16 @@ class AuditedListViewModel(private val application: Application,val activity: Ac
                             )
                         )
                 } catch (ex:Exception){
-                    getAuditTransactionsListStatus.postValue(StatusWithMessage(Status.NETWORK_FAIL,application.getString(
-                        R.string.error_in_getting_data)))
+                   // getAuditTransactionsListStatus.postValue(StatusWithMessage(Status.NETWORK_FAIL,application.getString(
+                       // R.string.error_in_getting_data)))
+                    getAuditTransactionsListStatus.postValue(StatusWithMessage(Status.NETWORK_FAIL,ex.message!!))
                 }
             }
         } catch (ex:Exception){
             Log.e(TAG, "getTransactionsList: ", ex)
-            getAuditTransactionsListStatus.postValue(StatusWithMessage(Status.NETWORK_FAIL,application.getString(
-                R.string.error_in_getting_data)))
+//            getAuditTransactionsListStatus.postValue(StatusWithMessage(Status.NETWORK_FAIL,application.getString(
+//                R.string.error_in_getting_data)))
+            getAuditTransactionsListStatus.postValue(StatusWithMessage(Status.NETWORK_FAIL,ex.message!!))
         }
     }
 }

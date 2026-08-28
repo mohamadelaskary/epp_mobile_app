@@ -2,7 +2,7 @@ package net.gbs.epp_project.Model
 
 import com.google.gson.annotations.SerializedName
 
-data class AuditOrderSubinventory(
+data class AuditOrderItemWithLocation(
     @SerializedName("subInventoryId"   ) var subInventoryId   : Int?    = null,
     @SerializedName("subInventoryCode" ) var subInventoryCode : String? = null,
     @SerializedName("subInventoryDesc" ) var subInventoryDesc : String? = null,

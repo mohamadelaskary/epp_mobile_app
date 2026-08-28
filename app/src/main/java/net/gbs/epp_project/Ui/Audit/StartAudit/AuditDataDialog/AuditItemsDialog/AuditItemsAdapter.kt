@@ -8,7 +8,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import net.gbs.epp_project.Model.AuditOrderSubinventory
+import net.gbs.epp_project.Model.AuditOrderItemWithLocation
 import net.gbs.epp_project.R
 import net.gbs.epp_project.databinding.AuditItemItemBinding
 import net.gbs.epp_project.databinding.AuditLocatorItemBinding
@@ -16,10 +16,10 @@ import net.gbs.epp_project.databinding.AuditLocatorItemBinding
 class AuditItemsAdapter(private val context: Context)
     : RecyclerView.Adapter<AuditItemsAdapter.AuditItemsViewHolder>(), Filterable {
 
-    private var originalList: List<AuditOrderSubinventory> = listOf()
-    private var filteredList: MutableList<AuditOrderSubinventory> = mutableListOf()
+    private var originalList: List<AuditOrderItemWithLocation> = listOf()
+    private var filteredList: MutableList<AuditOrderItemWithLocation> = mutableListOf()
 
-    var locatorsList: List<AuditOrderSubinventory> = listOf()
+    var locatorsList: List<AuditOrderItemWithLocation> = listOf()
         set(value) {
             field = value
 
@@ -87,7 +87,7 @@ class AuditItemsAdapter(private val context: Context)
 
             override fun publishResults(query: CharSequence?, results: FilterResults?) {
                 filteredList =
-                    (results?.values as? List<AuditOrderSubinventory>)?.toMutableList()
+                    (results?.values as? List<AuditOrderItemWithLocation>)?.toMutableList()
                         ?: mutableListOf()
 
                 notifyDataSetChanged()

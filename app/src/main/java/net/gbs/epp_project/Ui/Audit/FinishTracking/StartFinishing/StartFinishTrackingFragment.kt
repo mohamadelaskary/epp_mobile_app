@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import net.gbs.epp_project.Base.BaseFragmentWithViewModel
 import net.gbs.epp_project.Model.AuditOrder
-import net.gbs.epp_project.Model.AuditOrderSubinventory
+import net.gbs.epp_project.Model.AuditOrderItemWithLocation
 import net.gbs.epp_project.Model.NavigationKeys.AUDIT_ORDER_KEY
 import net.gbs.epp_project.Model.Status
 import net.gbs.epp_project.R
@@ -55,17 +55,17 @@ class StartFinishTrackingFragment : BaseFragmentWithViewModel<StartFinishTrackin
         }
     }
 
-    private var subInventories : List<AuditOrderSubinventory> = listOf()
+    private var subInventories : List<AuditOrderItemWithLocation> = listOf()
     private fun fillData() {
         with(binding){
             orderNo.text = auditOrder.orderNo
             orderDate.text = auditOrder.orderStartDate?.substring(0,10)
-            subInventories = auditOrder.subInventories
+            subInventories = auditOrder.itemsWithLocation
             val subInventoriesAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,subInventories)
             subInventorySpinner.setAdapter(subInventoriesAdapter)
         }
     }
-    private var selectedSubInventory : AuditOrderSubinventory? = null
+    private var selectedSubInventory : AuditOrderItemWithLocation? = null
     private fun setUpSubInventoriesSpinner() {
         binding.subInventorySpinner.setOnItemClickListener { adapterView, view, position, l ->
             selectedSubInventory = subInventories[position]

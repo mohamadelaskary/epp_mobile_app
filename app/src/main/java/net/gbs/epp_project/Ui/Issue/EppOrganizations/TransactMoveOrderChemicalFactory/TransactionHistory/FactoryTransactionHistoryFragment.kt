@@ -252,6 +252,14 @@ class FactoryTransactionHistoryFragment : BaseFragmentWithViewModel<TransactionH
             binding.locators.visibility = if (locatorsList.isNotEmpty()) VISIBLE else GONE
             locatorsAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,locatorsList)
             binding.locatorsSpinner.setAdapter(locatorsAdapter)
+            if (!moveOrderLine.froMLOCATORCode.isNullOrEmpty()){
+                selectedLocator = locatorsList.find { locator -> locator.locatorCode == moveOrderLine.froMLOCATORCode }
+                binding.locatorsSpinner.setText(moveOrderLine.froMLOCATORCode)
+                binding.locators.isEnabled = false
+                viewModel.getLotList(orgId,moveOrderLine.inventorYITEMID,subInventoryFrom?.subInventoryCode,selectedLocator?.locatorCode)
+            } else {
+                binding.locators.isEnabled = true
+            }
         }
 
     }
@@ -352,6 +360,13 @@ class FactoryTransactionHistoryFragment : BaseFragmentWithViewModel<TransactionH
 //            addLotsBottomSheet.lotList
             val lotAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,lotList)
             binding.lotNumberSpinner.setAdapter(lotAdapter)
+            if (!moveOrderLine.fromLotNumber.isNullOrEmpty()){
+                selectedLot = lotList.find { lot->lot.lotName==moveOrderLine.fromLotNumber }
+                binding.lotNumberSpinner.setText(moveOrderLine.fromLotNumber,false)
+                binding.lotNumber.isEnabled = false
+            } else {
+                binding.lotNumber.isEnabled = true
+            }
             if (lotList.isNotEmpty()){
                 binding.lotNumber.visibility = VISIBLE
             } else {

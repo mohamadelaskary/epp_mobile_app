@@ -6,11 +6,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import net.gbs.epp_project.Model.AuditLocator
-import net.gbs.epp_project.Model.AuditOrderSubinventory
+import net.gbs.epp_project.Model.AuditOrderItemWithLocation
+import net.gbs.epp_project.Ui.Audit.StartAudit.LocatorAudit
 import net.gbs.epp_project.databinding.AuditLocatorsDialogBinding
 
 class AuditLocatorsDialog(private val context: Context):Dialog(context) {
-    var auditLocator:List<AuditOrderSubinventory> = listOf()
+    var auditLocator:List<LocatorAudit> = listOf()
     private lateinit var binding:AuditLocatorsDialogBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

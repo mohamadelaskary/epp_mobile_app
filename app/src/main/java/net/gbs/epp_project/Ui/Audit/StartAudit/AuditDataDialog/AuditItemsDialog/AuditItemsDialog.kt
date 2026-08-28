@@ -7,11 +7,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import net.gbs.epp_project.Model.AuditOrderSubinventory
+import net.gbs.epp_project.Model.AuditOrderItemWithLocation
 import net.gbs.epp_project.databinding.AuditLocatorsDialogBinding
 
 class AuditItemsDialog(private val context: Context):Dialog(context) {
-    var itemsList:List<AuditOrderSubinventory> = listOf()
+    var itemsList:List<AuditOrderItemWithLocation> = listOf()
     private lateinit var binding:AuditLocatorsDialogBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

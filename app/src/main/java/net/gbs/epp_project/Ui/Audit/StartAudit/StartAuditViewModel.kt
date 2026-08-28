@@ -11,7 +11,7 @@ import net.gbs.epp_project.Base.BaseViewModel
 import net.gbs.epp_project.Model.ApiRequestBody.MobileLogBody
 import net.gbs.epp_project.Model.ApiRequestBody.PhysicalInventory_CountBody
 import net.gbs.epp_project.Model.AuditOrder
-import net.gbs.epp_project.Model.AuditOrderSubinventory
+import net.gbs.epp_project.Model.AuditOrderItemWithLocation
 import net.gbs.epp_project.Model.Item
 import net.gbs.epp_project.Model.LocatorAudit
 import net.gbs.epp_project.Model.Status
@@ -28,7 +28,7 @@ import java.lang.Exception
 class StartAuditViewModel(private val application: Application,val activity: Activity) : BaseViewModel(application,activity) {
     var locatorCode: String?=null
     var scannedQty: String? = null
-    var subinventory: AuditOrderSubinventory? = null
+    var selectedItem: AuditOrderItemWithLocation? = null
     var autoSave: Boolean? = null
     val auditRepository = AuditRepository(activity)
     val getLocatorDataLiveData = SingleLiveEvent<List<LocatorAudit>>()
